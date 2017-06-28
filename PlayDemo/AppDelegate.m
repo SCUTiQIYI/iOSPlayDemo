@@ -12,7 +12,6 @@
 #import "ZPSearchResultPageViewController.h"
 #import "QYPlayerController.h"
 
-
 @interface AppDelegate ()
 
 @end

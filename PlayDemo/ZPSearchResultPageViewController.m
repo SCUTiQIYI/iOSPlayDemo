@@ -6,7 +6,7 @@
 //  Copyright © 2017年 liuxiaodan. All rights reserved.
 //
 
-#import "ZPSearchPageViewController.h"
+#import "ZPSearchResultPageViewController.h"
 #import "ZPVideoInfo.h"
 #import "ZPPlayerViewController.h"
 #import "ZPChannelPageViewCell.h"
@@ -22,12 +22,7 @@ static const NSUInteger kSearchPageSize = 30;
 static const CGFloat kHeaderViewHeight = 50;
 static const CGFloat kCloseButtonWidth = 50;
 
-@interface ZPSearchPageViewController () <UISearchBarDelegate>
-
-/**
- *  上次搜索的关键字
- */
-@property (nonatomic, copy) NSString *searchKey;
+@interface ZPSearchResultPageViewController () <UISearchBarDelegate>
 
 /**
  *  搜索结果模型
@@ -48,11 +43,12 @@ static const CGFloat kCloseButtonWidth = 50;
 @property (nonatomic, weak) UIButton *closeBtn;
 @end
 
-@implementation ZPSearchPageViewController
+@implementation ZPSearchResultPageViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupSubView];
+    [self fetchDataWithKey:self.searchKey];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -66,7 +62,7 @@ static const CGFloat kCloseButtonWidth = 50;
  */
 - (void)setupSubView {
     [self setupTableView];
-    [self setupHeaderView];
+//    [self setupHeaderView];
     [self setupRefreshControl];
 }
 
@@ -409,23 +405,6 @@ static const CGFloat kCloseButtonWidth = 50;
     ZPPlayerViewController *playerVC = [[ZPPlayerViewController alloc]init];
     playerVC.videoInfo = videoInfo;
     [self presentViewController:playerVC animated:YES completion:nil];
-}
-
-#pragma mark - UISearchBarDelegate
--(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-//    [self.searchBar becomeFirstResponder];
-    return YES;
-}
-/**
- *  点击搜索按钮开始搜索
- */
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [self.searchResults removeAllObjects];
-    NSString *key = searchBar.text;
-    [self fetchDataWithKey:key];
-//    [self reloadData];
-    
-    [self.searchBar resignFirstResponder];
 }
 
 /*

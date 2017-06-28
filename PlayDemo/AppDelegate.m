@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "ZPHomePageViewController.h"
 #import "ViewController.h"
-#import "ZPSearchPageViewController.h"
+#import "ZPSearchResultPageViewController.h"
 #import "QYPlayerController.h"
 
 

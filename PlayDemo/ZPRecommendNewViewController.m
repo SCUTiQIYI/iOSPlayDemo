@@ -11,7 +11,7 @@
 #import "ZPVideoInfo.h"
 #import "ZPPlayerViewController.h"
 #import "ZYBannerView.h"
-#import "ZPSearchPageViewController.h"
+#import "ZPSearchResultPageViewController.h"
 #import "UIImageView+AFNetworking.h"
 #import "RecommentCollectionViewCellDataModel.h"
 #import "RecommentCollectionViewCell.h"
@@ -19,14 +19,23 @@
 #import "CollectionReusableBannerHeaderView.h"
 #import "CollectionReusableFooterView.h"
 #import "MBProgressHUD.h"
+#import "PYSearchViewController.h"
 
 
 static const CGFloat kSearchBarHeight = 40.0f;
 //static const CGFloat kCycleViewHeight = 180.0f;
 static const CGFloat kViewMargin = 10.0f;
+static const NSTimeInterval kRefetchDataInterval = 5.0f;
 static NSString* const kRecommendURL = @"http://iface.qiyi.com/openapi/batch/recommend?app_k=f0f6c3ee5709615310c0f053dc9c65f2&app_v=8.4&app_t=0&platform_id=12&dev_os=10.3.1&dev_ua=iPhone9,3&dev_hw=%7B%22cpu%22%3A0%2C%22gpu%22%3A%22%22%2C%22mem%22%3A%2250.4MB%22%7D&net_sts=1&scrn_sts=1&scrn_res=1334*750&scrn_dpi=153600&qyid=87390BD2-DACE-497B-9CD4-2FD14354B2A4&secure_v=1&secure_p=iPhone&core=1&req_sn=1493946331320&req_times=1";
 
-@interface ZPRecommendNewViewController () <ZYBannerViewDataSource, ZYBannerViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,CollectionReusableFooterViewDelegate, UISearchBarDelegate> {
+/**
+ *  排行榜借口，以此数据作为热搜关键词
+ */
+static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/recommend?app_k=f0f6c3ee5709615310c0f053dc9c65f2&app_v=8.4&app_t=0&platform_id=12&dev_os=10.3.1&dev_ua=iPhone9,3&dev_hw=%7B%22cpu%22%3A0%2C%22gpu%22%3A%22%22%2C%22mem%22%3A%2250.4MB%22%7D&net_sts=1&scrn_sts=1&scrn_res=1334*750&scrn_dpi=153600&qyid=87390BD2-DACE-497B-9CD4-2FD14354B2A4&secure_v=1&secure_p=iPhone&core=1&req_sn=1493946331320&req_times=1";
+
+
+
+@interface ZPRecommendNewViewController () <ZYBannerViewDataSource, ZYBannerViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,CollectionReusableFooterViewDelegate, UISearchBarDelegate, PYSearchViewControllerDelegate> {
     CGFloat ImforMationCellwidth;
     CGFloat TVCellwidth;
     
@@ -43,6 +52,8 @@ static NSString* const kRecommendURL = @"http://iface.qiyi.com/openapi/batch/rec
 /**
  *  上方的轮播图
  */
+@property (nonatomic, strong) NSArray *hotSearchs;
+
 @property (nonatomic, weak) ZYBannerView *cycleScrollView;
 
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -57,6 +68,7 @@ static NSString* const kRecommendURL = @"http://iface.qiyi.com/openapi/batch/rec
     [self setWidth];
     [self setupSubView];
     [self requestUrl];
+    [self fetchHotSearchsData];
     
     // Do any additional setup after loading the view.
 }
@@ -148,6 +160,72 @@ static NSString* const kRecommendURL = @"http://iface.qiyi.com/openapi/batch/rec
 }
 
 #pragma network request
+
+-(void)fetchHotSearchsData {
+    //1.创建请求
+    NSURL *url = [NSURL URLWithString:kPopChartURL];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    //2.创建连接
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *sesson = [NSURLSession sessionWithConfiguration:configuration];
+    
+    //3.创建任务
+    NSURLSessionDataTask *dataTask = [sesson dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (self.hotSearchs != nil) return;
+        if (error) {
+            //获取数据失败，则5秒后再获取
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kRefetchDataInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (self.hotSearchs == nil) {
+                    [self fetchHotSearchsData];
+                }
+            });
+        } else {
+            if (data == nil) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kRefetchDataInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    if (self.hotSearchs == nil) {
+                        [self fetchHotSearchsData];
+                    }
+                });
+                return;
+            }
+            NSDictionary *tmpDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            
+            NSNumber* resultCode = [tmpDic valueForKey:@"code"];
+            if (resultCode.integerValue != 0) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kRefetchDataInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    if (self.hotSearchs == nil) {
+                        [self fetchHotSearchsData];
+                    }
+                });
+                return;
+            }
+            
+            NSArray *data = [tmpDic objectForKey:@"data"];
+            
+            NSMutableArray *hotSearch = [NSMutableArray array];
+            ZPChannelInfo *televisionDramChannel = [ZPChannelInfo channelInfoWithDict:data[2]];
+            NSArray *televisionVideos = televisionDramChannel.video_list;
+            for (ZPVideoInfo *video in televisionVideos) {
+                [hotSearch addObject:video.title];
+            }
+            
+            ZPChannelInfo *moiveChannel = [ZPChannelInfo channelInfoWithDict:data[3]];
+            NSArray *moives = moiveChannel.video_list;
+            for (ZPVideoInfo *video in moives) {
+                [hotSearch addObject:video.title];
+            }
+            self.hotSearchs = hotSearch;
+  
+            
+        }
+    }];
+    
+    //4.执行任务
+    [dataTask resume];
+}
+
+
 /**
  *  请求网络数据
  */
@@ -342,8 +420,30 @@ static NSString* const kRecommendURL = @"http://iface.qiyi.com/openapi/batch/rec
 #pragma mark - UISearchBarDelegate
 
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-    ZPSearchPageViewController *vc = [[ZPSearchPageViewController alloc]init];
-    [self presentViewController:vc animated:YES completion:nil];
+//    ZPSearchResultPageViewController *vc = [[ZPSearchResultPageViewController alloc]init];
+//    [self presentViewController:vc animated:YES completion:nil];
+    
+    //1. 创建搜索控制器
+    PYSearchViewController *searchVC = [PYSearchViewController searchViewControllerWithHotSearches:self.hotSearchs searchBarPlaceholder:@"请输入搜索内容" didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
+        //2.设置搜索行为block
+        ZPSearchResultPageViewController *searchResultVC = [[ZPSearchResultPageViewController alloc]init];
+        searchResultVC.searchKey = searchText;
+        searchResultVC.title = searchText;
+        [searchViewController.navigationController pushViewController:searchResultVC animated:YES];
+        
+    }];
+    
+    //3.设置搜索样式
+    searchVC.hotSearchStyle = PYHotSearchStyleARCBorderTag;
+    searchVC.searchHistoryTags = PYSearchHistoryStyleDefault;
+    
+    //4.设置代理
+    searchVC.delegate = self;
+    
+    //5.弹出搜索控制器
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:searchVC];
+    [self presentViewController:nav  animated:NO completion:nil];
+//    [self presentViewController:searchVC animated:YES completion:nil];
 }
 /*
  #pragma mark - Navigation

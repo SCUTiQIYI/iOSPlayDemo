@@ -26,7 +26,14 @@
 		181B828B1EF69F120040D451 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 181B827B1EF69F120040D451 /* UIView+WebCacheOperation.m */; };
 		184FF35A1EE82186002293B5 /* DCPathButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 184FF3571EE82186002293B5 /* DCPathButton.m */; };
 		184FF35B1EE82186002293B5 /* DCPathItemButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 184FF3591EE82186002293B5 /* DCPathItemButton.m */; };
-		188135BA1EF4315E00F77E62 /* ZPSearchPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 188135B91EF4315E00F77E62 /* ZPSearchPageViewController.m */; };
+		186A8CA81F034D780066AF42 /* NSBundle+PYSearchExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A8C9B1F034D780066AF42 /* NSBundle+PYSearchExtension.m */; };
+		186A8CA91F034D780066AF42 /* PYSearch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 186A8C9C1F034D780066AF42 /* PYSearch.bundle */; };
+		186A8CAA1F034D780066AF42 /* PYSearchConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A8C9F1F034D780066AF42 /* PYSearchConst.m */; };
+		186A8CAB1F034D780066AF42 /* PYSearchSuggestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A8CA11F034D780066AF42 /* PYSearchSuggestionViewController.m */; };
+		186A8CAC1F034D780066AF42 /* PYSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A8CA31F034D780066AF42 /* PYSearchViewController.m */; };
+		186A8CAD1F034D780066AF42 /* UIColor+PYSearchExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A8CA51F034D780066AF42 /* UIColor+PYSearchExtension.m */; };
+		186A8CAE1F034D780066AF42 /* UIView+PYSearchExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A8CA71F034D780066AF42 /* UIView+PYSearchExtension.m */; };
+		188135BA1EF4315E00F77E62 /* ZPSearchResultPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 188135B91EF4315E00F77E62 /* ZPSearchResultPageViewController.m */; };
 		188E01C11EF6A25700970DA5 /* CollectionReusableBannerHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 188E01C01EF6A25700970DA5 /* CollectionReusableBannerHeaderView.m */; };
 		189629261EF03CD5005C3889 /* ZPChannelPageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 189629251EF03CD5005C3889 /* ZPChannelPageViewCell.m */; };
 		189A11651EF2A56B007B615C /* AFAutoPurgingImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 189A11521EF2A56B007B615C /* AFAutoPurgingImageCache.m */; };
@@ -87,7 +94,6 @@
 		18E52A7C1EEFA6D500244A7A /* TYTabTitleViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E52A7B1EEFA6D500244A7A /* TYTabTitleViewCell.m */; };
 		18F4E25C1EEC20C000D5659C /* ZPVideoInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F4E25B1EEC20C000D5659C /* ZPVideoInfoView.m */; };
 		18F4E25F1EED5D9D00D5659C /* ZPChannelInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F4E25E1EED5D9D00D5659C /* ZPChannelInfo.m */; };
-		18F4E2641EED6E2E00D5659C /* ZPRecommendPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F4E2631EED6E2E00D5659C /* ZPRecommendPageViewController.m */; };
 		906BA1A01F029B5E003D60C7 /* libav.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 906BA19F1F029B5E003D60C7 /* libav.a */; };
 		E56B6CA41EC169AA00648AF4 /* PlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E56B6CA31EC169AA00648AF4 /* PlayViewController.m */; };
 		E591049A1EC2BD20004AC0D2 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E59104991EC2BD20004AC0D2 /* CoreMedia.framework */; };
@@ -183,8 +189,22 @@
 		184FF3571EE82186002293B5 /* DCPathButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCPathButton.m; sourceTree = "<group>"; };
 		184FF3581EE82186002293B5 /* DCPathItemButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCPathItemButton.h; sourceTree = "<group>"; };
 		184FF3591EE82186002293B5 /* DCPathItemButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCPathItemButton.m; sourceTree = "<group>"; };
-		188135B81EF4315E00F77E62 /* ZPSearchPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZPSearchPageViewController.h; sourceTree = "<group>"; };
-		188135B91EF4315E00F77E62 /* ZPSearchPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZPSearchPageViewController.m; sourceTree = "<group>"; };
+		186A8C9A1F034D780066AF42 /* NSBundle+PYSearchExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+PYSearchExtension.h"; sourceTree = "<group>"; };
+		186A8C9B1F034D780066AF42 /* NSBundle+PYSearchExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+PYSearchExtension.m"; sourceTree = "<group>"; };
+		186A8C9C1F034D780066AF42 /* PYSearch.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PYSearch.bundle; sourceTree = "<group>"; };
+		186A8C9D1F034D780066AF42 /* PYSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYSearch.h; sourceTree = "<group>"; };
+		186A8C9E1F034D780066AF42 /* PYSearchConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYSearchConst.h; sourceTree = "<group>"; };
+		186A8C9F1F034D780066AF42 /* PYSearchConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYSearchConst.m; sourceTree = "<group>"; };
+		186A8CA01F034D780066AF42 /* PYSearchSuggestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYSearchSuggestionViewController.h; sourceTree = "<group>"; };
+		186A8CA11F034D780066AF42 /* PYSearchSuggestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYSearchSuggestionViewController.m; sourceTree = "<group>"; };
+		186A8CA21F034D780066AF42 /* PYSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYSearchViewController.h; sourceTree = "<group>"; };
+		186A8CA31F034D780066AF42 /* PYSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYSearchViewController.m; sourceTree = "<group>"; };
+		186A8CA41F034D780066AF42 /* UIColor+PYSearchExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+PYSearchExtension.h"; sourceTree = "<group>"; };
+		186A8CA51F034D780066AF42 /* UIColor+PYSearchExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+PYSearchExtension.m"; sourceTree = "<group>"; };
+		186A8CA61F034D780066AF42 /* UIView+PYSearchExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+PYSearchExtension.h"; sourceTree = "<group>"; };
+		186A8CA71F034D780066AF42 /* UIView+PYSearchExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+PYSearchExtension.m"; sourceTree = "<group>"; };
+		188135B81EF4315E00F77E62 /* ZPSearchResultPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZPSearchResultPageViewController.h; sourceTree = "<group>"; };
+		188135B91EF4315E00F77E62 /* ZPSearchResultPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZPSearchResultPageViewController.m; sourceTree = "<group>"; };
 		188E01BF1EF6A25700970DA5 /* CollectionReusableBannerHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionReusableBannerHeaderView.h; sourceTree = "<group>"; };
 		188E01C01EF6A25700970DA5 /* CollectionReusableBannerHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionReusableBannerHeaderView.m; sourceTree = "<group>"; };
 		189629241EF03CD5005C3889 /* ZPChannelPageViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZPChannelPageViewCell.h; sourceTree = "<group>"; };
@@ -307,8 +327,6 @@
 		18F4E25B1EEC20C000D5659C /* ZPVideoInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZPVideoInfoView.m; sourceTree = "<group>"; };
 		18F4E25D1EED5D9D00D5659C /* ZPChannelInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZPChannelInfo.h; sourceTree = "<group>"; };
 		18F4E25E1EED5D9D00D5659C /* ZPChannelInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZPChannelInfo.m; sourceTree = "<group>"; };
-		18F4E2621EED6E2E00D5659C /* ZPRecommendPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZPRecommendPageViewController.h; sourceTree = "<group>"; };
-		18F4E2631EED6E2E00D5659C /* ZPRecommendPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZPRecommendPageViewController.m; sourceTree = "<group>"; };
 		906BA1921F029B1D003D60C7 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIAuthenticationDialog.h; path = "IOSPlayerLib/include/asihttp include/ASIAuthenticationDialog.h"; sourceTree = SOURCE_ROOT; };
 		906BA1931F029B1D003D60C7 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASICacheDelegate.h; path = "IOSPlayerLib/include/asihttp include/ASICacheDelegate.h"; sourceTree = SOURCE_ROOT; };
 		906BA1941F029B1D003D60C7 /* ASIDataCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIDataCompressor.h; path = "IOSPlayerLib/include/asihttp include/ASIDataCompressor.h"; sourceTree = SOURCE_ROOT; };
@@ -447,6 +465,7 @@
 		1805A7941EEBA04E00DD58FE /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				186A8C991F034D770066AF42 /* PYSearch */,
 				181B825A1EF69F120040D451 /* SDWebImage */,
 				18C75BC11EF5554500EF5B74 /* IOSPlayerLib */,
 				18AEF33C1EF3CC020060C2D9 /* ZYBannerView */,
@@ -528,6 +547,27 @@
 			name = DCPathButton;
 			sourceTree = "<group>";
 		};
+		186A8C991F034D770066AF42 /* PYSearch */ = {
+			isa = PBXGroup;
+			children = (
+				186A8C9A1F034D780066AF42 /* NSBundle+PYSearchExtension.h */,
+				186A8C9B1F034D780066AF42 /* NSBundle+PYSearchExtension.m */,
+				186A8C9C1F034D780066AF42 /* PYSearch.bundle */,
+				186A8C9D1F034D780066AF42 /* PYSearch.h */,
+				186A8C9E1F034D780066AF42 /* PYSearchConst.h */,
+				186A8C9F1F034D780066AF42 /* PYSearchConst.m */,
+				186A8CA01F034D780066AF42 /* PYSearchSuggestionViewController.h */,
+				186A8CA11F034D780066AF42 /* PYSearchSuggestionViewController.m */,
+				186A8CA21F034D780066AF42 /* PYSearchViewController.h */,
+				186A8CA31F034D780066AF42 /* PYSearchViewController.m */,
+				186A8CA41F034D780066AF42 /* UIColor+PYSearchExtension.h */,
+				186A8CA51F034D780066AF42 /* UIColor+PYSearchExtension.m */,
+				186A8CA61F034D780066AF42 /* UIView+PYSearchExtension.h */,
+				186A8CA71F034D780066AF42 /* UIView+PYSearchExtension.m */,
+			);
+			path = PYSearch;
+			sourceTree = "<group>";
+		};
 		188135B61EF4312C00F77E62 /* SearchPage */ = {
 			isa = PBXGroup;
 			children = (
@@ -539,8 +579,8 @@
 		188135B71EF4313C00F77E62 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				188135B81EF4315E00F77E62 /* ZPSearchPageViewController.h */,
-				188135B91EF4315E00F77E62 /* ZPSearchPageViewController.m */,
+				188135B81EF4315E00F77E62 /* ZPSearchResultPageViewController.h */,
+				188135B91EF4315E00F77E62 /* ZPSearchResultPageViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -912,8 +952,6 @@
 		18F4E2651EED6EC000D5659C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				18F4E2621EED6E2E00D5659C /* ZPRecommendPageViewController.h */,
-				18F4E2631EED6E2E00D5659C /* ZPRecommendPageViewController.m */,
 				18AEF2E31EF3C6DC0060C2D9 /* ZPRecommendNewViewController.h */,
 				18AEF2E41EF3C6DC0060C2D9 /* ZPRecommendNewViewController.m */,
 			);
@@ -957,9 +995,6 @@
 				E56B6CA31EC169AA00648AF4 /* PlayViewController.m */,
 				E5C456F01EC07620003499D4 /* ActivityIndicatorView.h */,
 				E5C456F11EC07620003499D4 /* ActivityIndicatorView.m */,
-				18A7F6E11EF663B100AAB209 /* Assets.xcassets */,
-				E5F555CE1EC0004F004DFC8D /* LaunchScreen.storyboard */,
-				E5F555D11EC0004F004DFC8D /* Info.plist */,
 				E5F555C01EC0004F004DFC8D /* Supporting Files */,
 			);
 			path = PlayDemo;
@@ -968,6 +1003,9 @@
 		E5F555C01EC0004F004DFC8D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				18A7F6E11EF663B100AAB209 /* Assets.xcassets */,
+				E5F555CE1EC0004F004DFC8D /* LaunchScreen.storyboard */,
+				E5F555D11EC0004F004DFC8D /* Info.plist */,
 				E5F555C11EC0004F004DFC8D /* main.m */,
 			);
 			name = "Supporting Files";
@@ -1124,6 +1162,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				18A7F6E21EF663B100AAB209 /* Assets.xcassets in Resources */,
+				186A8CA91F034D780066AF42 /* PYSearch.bundle in Resources */,
 				E5F555D01EC0004F004DFC8D /* LaunchScreen.storyboard in Resources */,
 				18AEF3461EF3CC020060C2D9 /* ZYBannerView.bundle in Resources */,
 				18AE60371EF3886300F56F59 /* MJRefresh.bundle in Resources */,
@@ -1145,11 +1184,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				189A11691EF2A56B007B615C /* UIButton+AFNetworking.m in Sources */,
+				186A8CA81F034D780066AF42 /* NSBundle+PYSearchExtension.m in Sources */,
 				18A6156A1EEFE3A60081BEDD /* ZPChannelPageController.m in Sources */,
 				184FF35B1EE82186002293B5 /* DCPathItemButton.m in Sources */,
 				18C75BDB1EF5573000EF5B74 /* CollectionReusableHeadView.m in Sources */,
 				18F4E25C1EEC20C000D5659C /* ZPVideoInfoView.m in Sources */,
 				18AE603B1EF3886300F56F59 /* UIScrollView+MJRefresh.m in Sources */,
+				186A8CAB1F034D780066AF42 /* PYSearchSuggestionViewController.m in Sources */,
 				189A116B1EF2A56B007B615C /* UIProgressView+AFNetworking.m in Sources */,
 				18AEF3471EF3CC020060C2D9 /* ZYBannerView.m in Sources */,
 				189A11681EF2A56B007B615C /* UIActivityIndicatorView+AFNetworking.m in Sources */,
@@ -1160,6 +1201,7 @@
 				18AE602B1EF3886300F56F59 /* MJRefreshComponent.m in Sources */,
 				18E52A761EEFA6BF00244A7A /* TYTabPagerController.m in Sources */,
 				18C5520D1ED917430012E16B /* ZPVideoProgressBar.m in Sources */,
+				186A8CAD1F034D780066AF42 /* UIColor+PYSearchExtension.m in Sources */,
 				188E01C11EF6A25700970DA5 /* CollectionReusableBannerHeaderView.m in Sources */,
 				18AE60351EF3886300F56F59 /* MJRefreshNormalHeader.m in Sources */,
 				18AEF2E51EF3C6DC0060C2D9 /* ZPRecommendNewViewController.m in Sources */,
@@ -1168,10 +1210,12 @@
 				E5F555C51EC0004F004DFC8D /* AppDelegate.m in Sources */,
 				18F4E25F1EED5D9D00D5659C /* ZPChannelInfo.m in Sources */,
 				18C75BE01EF5574800EF5B74 /* RecommentCollectionViewCellDataModel.m in Sources */,
+				186A8CAA1F034D780066AF42 /* PYSearchConst.m in Sources */,
 				184FF35A1EE82186002293B5 /* DCPathButton.m in Sources */,
 				18AE60361EF3886300F56F59 /* MJRefreshStateHeader.m in Sources */,
 				18E52A771EEFA6BF00244A7A /* TYTabButtonPagerController.m in Sources */,
 				181B827E1EF69F120040D451 /* SDImageCache.m in Sources */,
+				186A8CAE1F034D780066AF42 /* UIView+PYSearchExtension.m in Sources */,
 				18AE603A1EF3886300F56F59 /* UIScrollView+MJExtension.m in Sources */,
 				181B827D1EF69F120040D451 /* NSData+ImageContentType.m in Sources */,
 				E5F555C21EC0004F004DFC8D /* main.m in Sources */,
@@ -1192,6 +1236,7 @@
 				18AE602E1EF3886300F56F59 /* MJRefreshAutoGifFooter.m in Sources */,
 				18AE60291EF3886300F56F59 /* MJRefreshAutoFooter.m in Sources */,
 				189A11661EF2A56B007B615C /* AFImageDownloader.m in Sources */,
+				186A8CAC1F034D780066AF42 /* PYSearchViewController.m in Sources */,
 				18AE60381EF3886300F56F59 /* MJRefreshConst.m in Sources */,
 				18AE603C1EF3886300F56F59 /* UIView+MJExtension.m in Sources */,
 				18AEF3441EF3CC020060C2D9 /* ZYBannerCell.m in Sources */,
@@ -1199,7 +1244,7 @@
 				181B828A1EF69F120040D451 /* UIImageView+WebCache.m in Sources */,
 				189A11671EF2A56B007B615C /* AFNetworkActivityIndicatorManager.m in Sources */,
 				181B827F1EF69F120040D451 /* SDWebImageCompat.m in Sources */,
-				188135BA1EF4315E00F77E62 /* ZPSearchPageViewController.m in Sources */,
+				188135BA1EF4315E00F77E62 /* ZPSearchResultPageViewController.m in Sources */,
 				181B82801EF69F120040D451 /* SDWebImageDecoder.m in Sources */,
 				181B82871EF69F120040D451 /* UIImage+MultiFormat.m in Sources */,
 				E56B6CA41EC169AA00648AF4 /* PlayViewController.m in Sources */,
@@ -1225,7 +1270,6 @@
 				18A6157B1EEFE4D30081BEDD /* AFNetworkReachabilityManager.m in Sources */,
 				18AE602F1EF3886300F56F59 /* MJRefreshAutoNormalFooter.m in Sources */,
 				18AE602A1EF3886300F56F59 /* MJRefreshBackFooter.m in Sources */,
-				18F4E2641EED6E2E00D5659C /* ZPRecommendPageViewController.m in Sources */,
 				18AE602C1EF3886300F56F59 /* MJRefreshFooter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

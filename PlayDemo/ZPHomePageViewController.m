@@ -9,7 +9,6 @@
 #import "ZPHomePageViewController.h"
 #import "ActivityIndicatorView.h"
 #import "TYTabButtonPagerController.h"
-#import "ZPRecommendPageViewController.h"
 #import "ZPChannelPageController.h"
 #import "ZPChannel.h"
 #import "ZPRecommendNewViewController.h"

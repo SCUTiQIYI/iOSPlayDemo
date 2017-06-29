@@ -273,6 +273,13 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
     
     ZPVideoInfo *videoInfo = self.videoInfo;
     [playController openPlayerByAlbumId:videoInfo.aID tvId:videoInfo.tvID isVip:videoInfo.isVip];
+    
+//    NSString *tvid = videoInfo.tvID;
+//    NSInteger integ = [tvid integerValue];
+//    integ++;
+//    tvid = [NSString stringWithFormat:@"%d", integ];
+//    [playController openPlayerByAlbumId:videoInfo.aID tvId:tvid isVip:videoInfo.isVip];
+    
     [self.view addSubview:playController.view];
     self.playController = playController;
 }

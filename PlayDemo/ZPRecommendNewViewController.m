@@ -217,20 +217,20 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
                 return;
             }
             
-            NSArray *data = [tmpDic objectForKey:@"data"];
-            
             NSMutableArray *hotSearch = [NSMutableArray array];
-            ZPChannelInfo *televisionDramChannel = [ZPChannelInfo channelInfoWithDict:data[2]];
-            NSArray *televisionVideos = televisionDramChannel.video_list;
-            for (ZPVideoInfo *video in televisionVideos) {
-                [hotSearch addObject:video.title];
+            NSArray *data = [tmpDic objectForKey:@"data"];
+            for (NSDictionary *channelDict in data) {
+                 ZPChannelInfo *channel = [ZPChannelInfo channelInfoWithDict:channelDict];
+                if (![channel.title isEqualToString:@"电影"] &&
+                    ![channel.title isEqualToString:@"电视剧"]) {
+                    continue;
+                }
+                NSArray *videos = channel.video_list;
+                for (ZPVideoInfo *video in videos) {
+                    [hotSearch addObject:video.title];
+                }
             }
             
-            ZPChannelInfo *moiveChannel = [ZPChannelInfo channelInfoWithDict:data[3]];
-            NSArray *moives = moiveChannel.video_list;
-            for (ZPVideoInfo *video in moives) {
-                [hotSearch addObject:video.title];
-            }
             self.hotSearchs = hotSearch;
   
             

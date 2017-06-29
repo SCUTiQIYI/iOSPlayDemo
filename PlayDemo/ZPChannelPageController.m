@@ -254,7 +254,6 @@ static const NSUInteger kChannelPageSize = 30;
     [self cancelRefreshing];
 }
 
-//-(void)
 
 /**
  *  停止上拉下拉转着的菊花

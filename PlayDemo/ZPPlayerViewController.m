@@ -19,9 +19,12 @@
 
 #define KIPhone_AVPlayerRect_mwidth 320
 #define KIPhone_AVPlayerRect_mheight 180
-
+/**不点击画面，隐藏进度条时长*/
+static const NSTimeInterval kZPHideSubviewDuration = 5.0f;
+/**隐藏进度条动画时长*/
+static const NSTimeInterval kZPHideSubviewAnimationDuration = 1.0f;
 /**动画时长*/
-static const NSTimeInterval kZPAnimationDuration = 0.2f;
+static const NSTimeInterval kZPScreenTransformAnimationDuration = 0.2f;
 /**
  *  按钮大小比例
  *  设置为1/6表示按钮大小为平面宽度的六分之一
@@ -92,7 +95,10 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
  *  是否静音播放
  */
 @property (nonatomic, assign, getter = isMute) BOOL mute;
-
+/**
+ *  用于计时隐藏进度条
+ */
+@property (nonatomic, strong) NSTimer *timer;
 
 @end
 
@@ -103,6 +109,7 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
     [super viewDidLoad];
     [self createSubView];
     [self initPlayerState];
+    [self addSingleTabGesture];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -151,15 +158,47 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
 /**
  *  设置全屏状态
  */
+//-(void)setFullScreen:(BOOL)isfullScreen {
+//    _fullScreen = isfullScreen;
+//    
+//    //1. 设置两个按钮状态
+//    self.fullScreenBtn.hidden = isfullScreen;
+//    self.originalScreenBtn.hidden = !isfullScreen;
+//    
+//    //2.设置屏幕显示比例
+//    /**原始比例*/
+//    CGAffineTransform transform = CGAffineTransformIdentity;
+//    //全屏
+//    if (isfullScreen) {
+//        //1.旋转
+//        transform = CGAffineTransformRotate(transform, M_PI_2);
+//        //2.平移
+//        CGPoint playerCenter = self.playController.view.center;
+//        CGPoint screenCenter = [[[UIApplication sharedApplication] keyWindow] center];
+//        CGFloat tx = screenCenter.y - playerCenter.y;
+//        CGFloat ty = screenCenter.x - playerCenter.x;
+//        transform = CGAffineTransformTranslate(transform, tx, ty);
+//        //3.放大
+//        CGSize playerSize = self.playController.view.bounds.size;
+//        CGSize screenSize = [[[UIApplication sharedApplication] keyWindow] bounds].size;
+//        CGFloat scale = MIN(screenSize.width / playerSize.height, screenSize.height / playerSize.width);
+//        transform = CGAffineTransformScale(transform, scale, scale);
+//    }
+//    [UIView animateWithDuration:kZPAnimationDuration animations:^{
+//        self.playController.view.transform = transform;
+//    }];
+//}
 -(void)setFullScreen:(BOOL)isfullScreen {
     _fullScreen = isfullScreen;
     
     //1. 设置两个按钮状态
     self.fullScreenBtn.hidden = isfullScreen;
     self.originalScreenBtn.hidden = !isfullScreen;
-    
+
     //2.设置屏幕显示比例
     /**原始比例*/
+    
+    
     CGAffineTransform transform = CGAffineTransformIdentity;
     //全屏
     if (isfullScreen) {
@@ -177,10 +216,11 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
         CGFloat scale = MIN(screenSize.width / playerSize.height, screenSize.height / playerSize.width);
         transform = CGAffineTransformScale(transform, scale, scale);
     }
-    [UIView animateWithDuration:kZPAnimationDuration animations:^{
+    [UIView animateWithDuration:kZPScreenTransformAnimationDuration animations:^{
         self.playController.view.transform = transform;
     }];
 }
+
 
 -(void)setMute:(BOOL)mute {
     _mute = mute;
@@ -189,6 +229,16 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
 }
 
 #pragma mark - Create subView
+/**
+ *  添加点击手势
+ */
+-(void)addSingleTabGesture {
+    UITapGestureRecognizer *singleTabGestureRecognizer = [[UITapGestureRecognizer alloc]init];
+    singleTabGestureRecognizer.numberOfTapsRequired = 1;
+    [singleTabGestureRecognizer addTarget:self action:@selector(singleTabAtPlayerView)];
+    [self.playController.view addGestureRecognizer:singleTabGestureRecognizer];
+}
+
 /**
  *  添加子控件
  */
@@ -463,12 +513,10 @@ static const CGFloat StatuesBarHeight = 20.0f;
     [self.suspendBtn removeFromSuperview];
     [self.screenShotView removeFromSuperview];
     [self.screenShotImageView removeFromSuperview];
-
 }
 
 /*
 #pragma mark - Navigation
-
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
@@ -477,6 +525,22 @@ static const CGFloat StatuesBarHeight = 20.0f;
 */
 
 #pragma mark - User interative
+
+-(void)singleTabAtPlayerView {
+    NSLog(@"tab at player view");
+    [self showAllSubview];
+    [self.timer invalidate];
+    __weak __typeof(&*self)weakSelf =self;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:kZPHideSubviewDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
+        [weakSelf hideAllSubViewWithAnimation];
+    }];
+
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kZPHideSubviewDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [self hideAllSubViewWithAnimation];
+////        [self hideAllSubview];
+//    });
+}
+
 /**
  *  关闭弹出的这个播放器
  */
@@ -625,6 +689,30 @@ static const CGFloat StatuesBarHeight = 20.0f;
 }
 #pragma mark - Other method
 static bool kIsFullScreen;
+
+/**
+ *  动画方式渐隐子控件
+ */
+-(void)hideAllSubViewWithAnimation {
+    [UIView animateWithDuration:kZPHideSubviewAnimationDuration animations:^{
+//        kIsFullScreen = self.fullScreenBtn.isHidden;
+        self.fullScreenBtn.alpha = 0.0f;
+        self.originalScreenBtn.alpha = 0.0f;
+        self.playBtn.alpha = 0.0f;
+        self.pauseBtn.alpha = 0.0f;
+        self.progressBar.alpha = 0.0f;
+        self.suspendBtn.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        [self hideAllSubview];
+        self.fullScreenBtn.alpha = 1.0f;
+        self.originalScreenBtn.alpha = 1.0f;
+        self.playBtn.alpha = 1.0f;
+        self.pauseBtn.alpha = 1.0f;
+        self.progressBar.alpha = 1.0f;
+        self.suspendBtn.alpha = 1.0f;
+    }];
+}
+
 /**
  *  隐藏所有子控件
  */

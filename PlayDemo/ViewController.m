@@ -483,9 +483,10 @@
     
     
     NSURLRequest * request = [NSURLRequest requestWithURL:url];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        if (connectionError)
+    NSURLSessionConfiguration *conf = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:conf];
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error)
         {
             [self performSelectorOnMainThread:@selector(requestFailed) withObject:nil waitUntilDone:NO];
         }
@@ -494,7 +495,7 @@
             NSDictionary *tmpDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             NSArray *data = [tmpDic objectForKey:@"data"];
             
-
+            
             //debug ----------------
             
             NSMutableArray *dataArr = [NSMutableArray array];
@@ -502,17 +503,6 @@
                 [dataArr addObject:[ZPChannelInfo channelInfoWithDict:dict]];
             }
             self.channelsInfos = dataArr;
-            /*
-            ZPVideoInfo *videoInfo;
-            if ([data count] > 0) {
-                NSDictionary *dict = data[0][@"video_list"][0];
-                videoInfo = [ZPVideoInfo videoInfoWithDict:dict];
-                ZPPlayerViewController *playVC = [[ZPPlayerViewController alloc]init];
-                playVC.videoInfo = videoInfo;
-                [self presentViewController:playVC animated:YES completion:nil];
-            }
-            */
-            //debug
             
             NSNumber* resultCode = [tmpDic valueForKey:@"code"];
             if (resultCode.integerValue == 0) {
@@ -520,7 +510,7 @@
             }
         }
     }];
-
+    [task resume];
 }
 - (void)requestFailed
 {

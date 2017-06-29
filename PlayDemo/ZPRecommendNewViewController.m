@@ -19,6 +19,7 @@
 #import "CollectionReusableBannerHeaderView.h"
 #import "CollectionReusableFooterView.h"
 #import "MBProgressHUD.h"
+#import "MJRefresh.h"
 #import "PYSearchViewController.h"
 
 
@@ -66,10 +67,10 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setWidth];
-    [self setupSubView];
-    [self requestUrl];
-    [self fetchHotSearchsData];
     
+    [self requestUrl];
+    [self setupSubView];
+    [self fetchHotSearchsData];
     // Do any additional setup after loading the view.
 }
 
@@ -88,7 +89,22 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
  */
 -(void)setupSubView {
     [self setupSearchBar];
-    //[self setupCycleView];
+    [self setupCollectionView];
+    [self setupRefreshControl];
+}
+
+/**
+ *  设置下拉刷新
+ */
+-(void)setupRefreshControl {
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [self requestUrl];
+    }];
+    [header setTitle:@"下拉刷新" forState:MJRefreshStateIdle];
+    [header setTitle:@"正在加载" forState:MJRefreshStateRefreshing];
+    [header setTitle:@"松开加载" forState:MJRefreshStatePulling];
+    [header setTitle:@"加载失败" forState:MJRefreshStateNoMoreData];
+    self.collectionView.mj_header = header;
 }
 
 /**
@@ -259,13 +275,15 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
             NSNumber* resultCode = [tmpDic valueForKey:@"code"];
             if (resultCode.integerValue == 0) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    //                    [self showDataMessage:data];
+//                    [self showDataMessage:data];
                     [self reloadData];
                 });
             }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self setupCollectionView];
-            });
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self setupCollectionView];
+//                [self setupRefreshControl];
+//                [self.collectionView reloadData];
+//            });
             
             
         }
@@ -288,7 +306,9 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
  */
 - (void)reloadData {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
+    [self.collectionView.mj_header endRefreshing];
     [self.cycleScrollView reloadData];
+    [self.collectionView reloadData];
 }
 
 

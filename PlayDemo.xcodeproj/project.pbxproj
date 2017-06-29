@@ -900,6 +900,7 @@
 		18C75BDD1EF5573B00EF5B74 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				18C75BD31EF5571E00EF5B74 /* View */,
 				18C75BDE1EF5574800EF5B74 /* RecommentCollectionViewCellDataModel.h */,
 				18C75BDF1EF5574800EF5B74 /* RecommentCollectionViewCellDataModel.m */,
 			);
@@ -943,7 +944,6 @@
 			isa = PBXGroup;
 			children = (
 				18C75BDD1EF5573B00EF5B74 /* Model */,
-				18C75BD31EF5571E00EF5B74 /* View */,
 				18F4E2651EED6EC000D5659C /* Controller */,
 			);
 			name = RecommendPage;
@@ -1126,7 +1126,7 @@
 				TargetAttributes = {
 					E5F555BC1EC0004F004DFC8D = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = QR8U5QB33T;
+						DevelopmentTeam = Z2ANP2RWYV;
 						ProvisioningStyle = Automatic;
 					};
 					E5F555D51EC0004F004DFC8D = {
@@ -1399,7 +1399,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = QR8U5QB33T;
+				DEVELOPMENT_TEAM = Z2ANP2RWYV;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1421,7 +1421,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = hzp.com.scut.QyPlayer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xjplayer.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = armv7;
 			};
@@ -1431,7 +1431,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = QR8U5QB33T;
+				DEVELOPMENT_TEAM = Z2ANP2RWYV;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1453,7 +1453,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = hzp.com.scut.QyPlayer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xjplayer.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = "arm64 armv7";
 			};

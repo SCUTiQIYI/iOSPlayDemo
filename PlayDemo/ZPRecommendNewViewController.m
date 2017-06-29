@@ -159,7 +159,7 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
     CGFloat colleViewX = kViewMargin;
     CGFloat colleViewY = CGRectGetMaxY(self.searchBar.frame)+kViewMargin;
     CGFloat colleViewW = self.view.frame.size.width - 2 * kViewMargin;
-    CGFloat colleViewH = self.view.frame.size.height - colleViewY;
+    CGFloat colleViewH = self.view.frame.size.height - colleViewY - 64;
     
     
     _collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(colleViewX, colleViewY, colleViewW, colleViewH) collectionViewLayout:flowLayout];
@@ -362,6 +362,9 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
     ZPChannelInfo *channelInfo = _channelsInfos[indexPath.section+1];
     ZPVideoInfo *videoInfo = channelInfo.video_list[indexPath.row];
     RecommentCollectionViewCellDataModel *model = [[RecommentCollectionViewCellDataModel alloc] initWithDict:videoInfo];
+    if (indexPath.section > 1) {
+        model.isShowDetailLable = YES;
+    }
     cell.dataModel = model;
     return cell;
     
@@ -369,10 +372,17 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
 
 #pragma mark - UICollectionView Delegate
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 3) {
-        return CGSizeMake(ImforMationCellwidth, ImforMationCellwidth*7/10+20);
+    switch (indexPath.section) {
+        case 2:
+            return CGSizeMake(TVCellwidth,TVCellwidth*4/3+20+15);
+            break;
+        case 3:
+            return CGSizeMake(ImforMationCellwidth, ImforMationCellwidth*7/10+20+15);
+            break;
+        default:
+            return CGSizeMake(TVCellwidth,TVCellwidth*4/3+20);
+            break;
     }
-    return CGSizeMake(TVCellwidth,TVCellwidth*4/3+20);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
@@ -380,7 +390,6 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
         case 0:
             return CGSizeMake(self.view.frame.size.width, 185);
             break;
-            
         default:
             return CGSizeMake(self.view.frame.size.width, 20);
             break;

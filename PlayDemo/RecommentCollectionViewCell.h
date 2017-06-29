@@ -11,4 +11,5 @@
 @interface RecommentCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) RecommentCollectionViewCellDataModel *dataModel;
+
 @end

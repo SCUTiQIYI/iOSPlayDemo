@@ -12,6 +12,8 @@
 
 @property (nonatomic, copy)NSString *imgUrl;
 @property (nonatomic, copy)NSString *text;
+@property (nonatomic, copy)NSString *detailText;
+@property (nonatomic, assign)BOOL isShowDetailLable;
 
 - (instancetype) initWithDict:(ZPVideoInfo *)info;
 

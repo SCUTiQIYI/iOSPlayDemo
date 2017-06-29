@@ -16,8 +16,10 @@
 @implementation RecommentCollectionViewCellDataModel
 - (instancetype) initWithDict:(ZPVideoInfo *)info {
     if (self = [super init]) {
+        _isShowDetailLable = false;
         _imgUrl = info.img;
-        _text = info.shortTitle;
+        _text = info.title;
+        _detailText = info.shortTitle;
     }
     return self;
 }

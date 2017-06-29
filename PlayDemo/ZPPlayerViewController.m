@@ -112,6 +112,11 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
     [self addSingleTabGesture];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self singleTabAtPlayerView];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

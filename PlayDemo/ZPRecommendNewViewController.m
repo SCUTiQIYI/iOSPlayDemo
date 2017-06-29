@@ -263,12 +263,19 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
                 [self requestFailed];
             });
         } else {
+            
             NSDictionary *tmpDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             NSArray *data = [tmpDic objectForKey:@"data"];
             
             NSMutableArray *dataArr = [NSMutableArray array];
             for (NSDictionary *dict in data) {
                 [dataArr addObject:[ZPChannelInfo channelInfoWithDict:dict]];
+            }
+            //将咨询行在展示行的最后
+            if (dataArr.count >= 2) {
+                ZPChannelInfo *channel = dataArr[1];;
+                [dataArr removeObjectAtIndex:1];
+                [dataArr addObject:channel];
             }
             self.channelsInfos = dataArr;
             
@@ -279,13 +286,6 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
                     [self reloadData];
                 });
             }
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self setupCollectionView];
-//                [self setupRefreshControl];
-//                [self.collectionView reloadData];
-//            });
-            
-            
         }
     }];
     
@@ -369,7 +369,7 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
 
 #pragma mark - UICollectionView Delegate
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
+    if (indexPath.section == 3) {
         return CGSizeMake(ImforMationCellwidth, ImforMationCellwidth*7/10+20);
     }
     return CGSizeMake(TVCellwidth,TVCellwidth*4/3+20);

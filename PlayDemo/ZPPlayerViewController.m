@@ -14,7 +14,7 @@
 #import "ZPTools.h"
 #import "MBProgressHUD.h"
 #import "ZPVideoInfoView.h"
-#import <objc/runtime.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 
 #define KIPhone_AVPlayerRect_mwidth 320
@@ -227,10 +227,29 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
 }
 
 
+//static float volumn = 0;
 -(void)setMute:(BOOL)mute {
     _mute = mute;
-    [self.playController setMute:mute];
+    
+    [self.playController setMute:YES];
+//    [self.playController setMute:mute];
 //    [[QYPlayerController sharedInstance]setMute:YES];
+    
+//    MPVolumeView *volumeV = [[MPVolumeView alloc]init];
+//    volumeV.showsVolumeSlider = NO;
+//    UISlider *volumeSlider = nil;
+//    for (UIView *view in volumeV.subviews) {
+//        if ([[view.class description]isEqualToString:@"MPVolumeSlider"]) {
+//            volumeSlider = (UISlider*)view;
+//            break;
+//        }
+//    }
+//    if (mute) {
+//        volumn = volumeSlider.value;
+//        volumeSlider.value = 0.0f;
+//    } else {
+//        volumeSlider.value = volumn;
+//    }
 }
 
 #pragma mark - Create subView
@@ -546,11 +565,6 @@ static const CGFloat StatuesBarHeight = 20.0f;
     self.timer = [NSTimer scheduledTimerWithTimeInterval:kZPHideSubviewDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
         [weakSelf hideAllSubViewWithAnimation];
     }];
-
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kZPHideSubviewDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [self hideAllSubViewWithAnimation];
-////        [self hideAllSubview];
-//    });
 }
 
 /**
@@ -749,7 +763,7 @@ static bool kIsFullScreen;
         self.originalScreenBtn.hidden = YES;
     }
     //根据播放器播放状态显示播放
-    if (self.playController.isPlaying) {
+    if (self.isPlaying) {
         self.playBtn.hidden = YES;
         self.pauseBtn.hidden = NO;
     } else {

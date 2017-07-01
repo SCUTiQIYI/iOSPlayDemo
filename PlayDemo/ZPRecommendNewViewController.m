@@ -21,7 +21,7 @@
 #import "MBProgressHUD.h"
 #import "MJRefresh.h"
 #import "PYSearchViewController.h"
-
+#import "PlayViewTransitionAnimator.h"
 
 static const CGFloat kSearchBarHeight = 40.0f;
 //static const CGFloat kCycleViewHeight = 180.0f;
@@ -36,7 +36,7 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
 
 
 
-@interface ZPRecommendNewViewController () <ZYBannerViewDataSource, ZYBannerViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,CollectionReusableFooterViewDelegate, UISearchBarDelegate, PYSearchViewControllerDelegate> {
+@interface ZPRecommendNewViewController () <ZYBannerViewDataSource, ZYBannerViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,CollectionReusableFooterViewDelegate, UISearchBarDelegate, PYSearchViewControllerDelegate,UIViewControllerTransitioningDelegate> {
     CGFloat ImforMationCellwidth;
     CGFloat TVCellwidth;
     
@@ -58,6 +58,12 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
 @property (nonatomic, weak) ZYBannerView *cycleScrollView;
 
 @property (nonatomic, strong) UICollectionView *collectionView;
+
+
+/**
+ 记录动画时初始位置
+ */
+@property (nonatomic, assign)CGRect destinationFrame;
 
 @end
 
@@ -343,6 +349,7 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
     ZPVideoInfo *video = cycleChannel.video_list[index];
     ZPPlayerViewController *playVC = [[ZPPlayerViewController alloc]init];
     playVC.videoInfo = video;
+    playVC.transitioningDelegate = self;
     [self presentViewController:playVC animated:YES completion:nil];
 }
 
@@ -434,6 +441,11 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
     ZPVideoInfo *video = cycleChannel.video_list[indexPath.row];
     ZPPlayerViewController *playVC = [[ZPPlayerViewController alloc]init];
     playVC.videoInfo = video;
+    playVC.transitioningDelegate = self;
+    
+    UITableViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    UIWindow * window=[[[UIApplication sharedApplication] delegate] window];
+    _destinationFrame = [cell convertRect:cell.bounds toView:window];
     [self presentViewController:playVC animated:YES completion:nil];
 }
 
@@ -443,7 +455,6 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
     if ([self.delegate respondsToSelector:@selector(moreVideoButtonDidClick:)]) {
         [self.delegate performSelector:@selector(moreVideoButtonDidClick:) withObject:channel.title];
     }
-    NSLog(@"%@", btn);
 }
 
 #pragma mark - UISearchBarDelegate
@@ -468,10 +479,11 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
     
     //4.设置代理
     searchVC.delegate = self;
-    
+
     //5.弹出搜索控制器
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:searchVC];
-    [self presentViewController:nav  animated:NO completion:nil];
+    nav.transitioningDelegate = self;
+    [self presentViewController:nav  animated:YES completion:nil];
 //    [self presentViewController:searchVC animated:YES completion:nil];
 }
 /*
@@ -483,6 +495,37 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
  // Pass the selected object to the new view controller.
  }
  */
+//| ----------------------------------------------------------------------------
+//  The system calls this method on the presented view controller's
+//  transitioningDelegate to retrieve the animator object used for animating
+//  the presentation of the incoming view controller.  Your implementation is
+//  expected to return an object that conforms to the
+//  UIViewControllerAnimatedTransitioning protocol, or nil if the default
+//  presentation animation should be used.
+//
+
+#pragma mark - UIViewControllerAnimatedTransitioning
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    PlayViewTransitionAnimator *animator = [[PlayViewTransitionAnimator alloc] init];
+    return animator;
+}
+
+
+//| ----------------------------------------------------------------------------
+//  The system calls this method on the presented view controller's
+//  transitioningDelegate to retrieve the animator object used for animating
+//  the dismissal of the presented view controller.  Your implementation is
+//  expected to return an object that conforms to the
+//  UIViewControllerAnimatedTransitioning protocol, or nil if the default
+//  dismissal animation should be used.
+//
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    PlayViewTransitionAnimator *animator = [[PlayViewTransitionAnimator alloc] init];
+
+    return animator;
+}
 
 @end
 

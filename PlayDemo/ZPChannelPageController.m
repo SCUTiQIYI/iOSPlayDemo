@@ -14,7 +14,7 @@
 #import "ZPChannelPageViewCell.h"
 #import "MJRefresh.h"
 #import "MBProgressHUD.h"
-
+#import "PlayViewTransitionAnimator.h"
 
 static NSString* const kChannelBaseURL = @"http://iface.qiyi.com/openapi/batch/channel";
 static const NSUInteger kChannelPageSize = 30;
@@ -331,8 +331,34 @@ static const NSUInteger kChannelPageSize = 30;
     ZPVideoInfo *videoInfo = self.videoList[indexPath.row];
     ZPPlayerViewController *playerVC = [[ZPPlayerViewController alloc]init];
     playerVC.videoInfo = videoInfo;
+    playerVC.transitioningDelegate = self;
     [self presentViewController:playerVC animated:YES completion:nil];
 }
+
+
+#pragma mark - UIViewControllerAnimatedTransitioning
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    PlayViewTransitionAnimator *animator = [[PlayViewTransitionAnimator alloc] init];
+    return animator;
+}
+
+
+//| ----------------------------------------------------------------------------
+//  The system calls this method on the presented view controller's
+//  transitioningDelegate to retrieve the animator object used for animating
+//  the dismissal of the presented view controller.  Your implementation is
+//  expected to return an object that conforms to the
+//  UIViewControllerAnimatedTransitioning protocol, or nil if the default
+//  dismissal animation should be used.
+//
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    PlayViewTransitionAnimator *animator = [[PlayViewTransitionAnimator alloc] init];
+    
+    return animator;
+}
+
 
 /*
 #pragma mark - Navigation

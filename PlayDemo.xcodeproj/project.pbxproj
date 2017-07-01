@@ -94,6 +94,8 @@
 		18E52A7C1EEFA6D500244A7A /* TYTabTitleViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E52A7B1EEFA6D500244A7A /* TYTabTitleViewCell.m */; };
 		18F4E25C1EEC20C000D5659C /* ZPVideoInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F4E25B1EEC20C000D5659C /* ZPVideoInfoView.m */; };
 		18F4E25F1EED5D9D00D5659C /* ZPChannelInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F4E25E1EED5D9D00D5659C /* ZPChannelInfo.m */; };
+		6C28EB951F07507C0097C579 /* PlayViewTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C28EB941F07507C0097C579 /* PlayViewTransitionAnimator.m */; };
+		6C28EB981F0753A90097C579 /* SearchPageTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C28EB971F0753A90097C579 /* SearchPageTransitionAnimator.m */; };
 		906BA1A01F029B5E003D60C7 /* libav.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 906BA19F1F029B5E003D60C7 /* libav.a */; };
 		E56B6CA41EC169AA00648AF4 /* PlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E56B6CA31EC169AA00648AF4 /* PlayViewController.m */; };
 		E591049A1EC2BD20004AC0D2 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E59104991EC2BD20004AC0D2 /* CoreMedia.framework */; };
@@ -327,6 +329,10 @@
 		18F4E25B1EEC20C000D5659C /* ZPVideoInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZPVideoInfoView.m; sourceTree = "<group>"; };
 		18F4E25D1EED5D9D00D5659C /* ZPChannelInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZPChannelInfo.h; sourceTree = "<group>"; };
 		18F4E25E1EED5D9D00D5659C /* ZPChannelInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZPChannelInfo.m; sourceTree = "<group>"; };
+		6C28EB931F07507C0097C579 /* PlayViewTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayViewTransitionAnimator.h; sourceTree = "<group>"; };
+		6C28EB941F07507C0097C579 /* PlayViewTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayViewTransitionAnimator.m; sourceTree = "<group>"; };
+		6C28EB961F0753A90097C579 /* SearchPageTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchPageTransitionAnimator.h; sourceTree = "<group>"; };
+		6C28EB971F0753A90097C579 /* SearchPageTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchPageTransitionAnimator.m; sourceTree = "<group>"; };
 		906BA1921F029B1D003D60C7 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIAuthenticationDialog.h; path = "IOSPlayerLib/include/asihttp include/ASIAuthenticationDialog.h"; sourceTree = SOURCE_ROOT; };
 		906BA1931F029B1D003D60C7 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASICacheDelegate.h; path = "IOSPlayerLib/include/asihttp include/ASICacheDelegate.h"; sourceTree = SOURCE_ROOT; };
 		906BA1941F029B1D003D60C7 /* ASIDataCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIDataCompressor.h; path = "IOSPlayerLib/include/asihttp include/ASIDataCompressor.h"; sourceTree = SOURCE_ROOT; };
@@ -958,6 +964,17 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
+		6C28EB921F074FB00097C579 /* TransitionAnimator */ = {
+			isa = PBXGroup;
+			children = (
+				6C28EB931F07507C0097C579 /* PlayViewTransitionAnimator.h */,
+				6C28EB941F07507C0097C579 /* PlayViewTransitionAnimator.m */,
+				6C28EB961F0753A90097C579 /* SearchPageTransitionAnimator.h */,
+				6C28EB971F0753A90097C579 /* SearchPageTransitionAnimator.m */,
+			);
+			name = TransitionAnimator;
+			sourceTree = "<group>";
+		};
 		E5F555B41EC0004F004DFC8D = {
 			isa = PBXGroup;
 			children = (
@@ -980,6 +997,7 @@
 		E5F555BF1EC0004F004DFC8D /* PlayDemo */ = {
 			isa = PBXGroup;
 			children = (
+				6C28EB921F074FB00097C579 /* TransitionAnimator */,
 				1805A7941EEBA04E00DD58FE /* Lib */,
 				18C552091ED810560012E16B /* Others */,
 				18A0B3141EEFA9570058AABF /* HomePage */,
@@ -1205,6 +1223,7 @@
 				188E01C11EF6A25700970DA5 /* CollectionReusableBannerHeaderView.m in Sources */,
 				18AE60351EF3886300F56F59 /* MJRefreshNormalHeader.m in Sources */,
 				18AEF2E51EF3C6DC0060C2D9 /* ZPRecommendNewViewController.m in Sources */,
+				6C28EB981F0753A90097C579 /* SearchPageTransitionAnimator.m in Sources */,
 				181B82891EF69F120040D451 /* UIImageView+HighlightedWebCache.m in Sources */,
 				18A6157C1EEFE4D30081BEDD /* AFSecurityPolicy.m in Sources */,
 				E5F555C51EC0004F004DFC8D /* AppDelegate.m in Sources */,
@@ -1257,6 +1276,7 @@
 				18A6157D1EEFE4D30081BEDD /* AFURLRequestSerialization.m in Sources */,
 				18C552081ED8104F0012E16B /* ZPTools.m in Sources */,
 				189629261EF03CD5005C3889 /* ZPChannelPageViewCell.m in Sources */,
+				6C28EB951F07507C0097C579 /* PlayViewTransitionAnimator.m in Sources */,
 				18E52A7C1EEFA6D500244A7A /* TYTabTitleViewCell.m in Sources */,
 				18E52A751EEFA6BF00244A7A /* TYPagerController.m in Sources */,
 				189A116D1EF2A56B007B615C /* UIWebView+AFNetworking.m in Sources */,

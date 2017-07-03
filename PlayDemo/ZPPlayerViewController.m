@@ -17,7 +17,7 @@
 #import "AFNetworking.h"
 #import "ZPChannelPageViewCell.h"
 #import <MediaPlayer/MediaPlayer.h>
-
+#import "PlayViewTransitionAnimator.h"
 
 #define KIPhone_AVPlayerRect_mwidth 320
 #define KIPhone_AVPlayerRect_mheight 180
@@ -53,7 +53,7 @@ static const CGFloat kZPPlayerViewSubViewMargin = 5.0f;
  *  状态弹出框的现实时长
  */
 static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
-@interface ZPPlayerViewController () <QYPlayerControllerDelegate, ZPVideoProgressBarDelegate, DCPathButtonDelegate, ZPPlayerViewControllerDelegate, UIViewControllerTransitioningDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface ZPPlayerViewController () <QYPlayerControllerDelegate, ZPVideoProgressBarDelegate, DCPathButtonDelegate, ZPPlayerViewControllerDelegate, UIViewControllerTransitioningDelegate, UITableViewDataSource, UITableViewDelegate,UIViewControllerTransitioningDelegate>
 /**
  *  播放器
  */
@@ -998,7 +998,7 @@ static bool kIsFullScreen;
     playerVC.delegate = self;
     [self removeSubView];
     self.curplaytime = self.playController.currentPlaybackTime;
-
+    playerVC.transitioningDelegate = self;
     [self presentViewController:playerVC animated:YES completion:nil];
 }
 
@@ -1009,7 +1009,36 @@ static bool kIsFullScreen;
     [self playVideoWithOffset:self.curplaytime];
 }
 
+
+
+#pragma mark - UIViewControllerAnimatedTransitioning
+
+#pragma mark - UIViewControllerAnimatedTransitioning
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    PlayViewTransitionAnimator *animator = [[PlayViewTransitionAnimator alloc] init];
+    return animator;
+}
+
+
+//| ----------------------------------------------------------------------------
+//  The system calls this method on the presented view controller's
+//  transitioningDelegate to retrieve the animator object used for animating
+//  the dismissal of the presented view controller.  Your implementation is
+//  expected to return an object that conforms to the
+//  UIViewControllerAnimatedTransitioning protocol, or nil if the default
+//  dismissal animation should be used.
+//
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    PlayViewTransitionAnimator *animator = [[PlayViewTransitionAnimator alloc] init];
+    
+    return animator;
+}
+
 @end
+
+
 //-(void)pathButton:(DCPathButton*)dcPathButton clickItemButtonAtIndex:(NSUInteger)itemButtonIndex {
 
 //}

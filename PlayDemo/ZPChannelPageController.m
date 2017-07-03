@@ -19,7 +19,7 @@
 static NSString* const kChannelBaseURL = @"http://iface.qiyi.com/openapi/batch/channel";
 static const NSUInteger kChannelPageSize = 30;
 
-@interface ZPChannelPageController ()
+@interface ZPChannelPageController () <UIViewControllerTransitioningDelegate>
 /**
  *  视频列表
  */

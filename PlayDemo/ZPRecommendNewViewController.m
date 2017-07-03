@@ -523,7 +523,6 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
     PlayViewTransitionAnimator *animator = [[PlayViewTransitionAnimator alloc] init];
-
     return animator;
 }
 

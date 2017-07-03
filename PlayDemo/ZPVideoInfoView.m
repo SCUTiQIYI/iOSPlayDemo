@@ -25,8 +25,8 @@
 @property (nonatomic, weak) UILabel *videoPropertyTypeLabel;
 /**显示视频发布时间*/
 @property (nonatomic, weak) UILabel *dateLabel;
-
-
+/**显示推荐视频*/
+@property (nonatomic, weak) UILabel *recommentLabel;
 @end
 
 
@@ -92,6 +92,12 @@
 //    [dataTime setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
     [self addSubview:dataTime];
     self.dateLabel = dataTime;
+    
+    UILabel *recommendLabel = [[UILabel alloc]init];
+    recommendLabel.text = @"相关视频推荐";
+    recommendLabel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:recommendLabel];
+    self.recommentLabel = recommendLabel;
 }
 
 
@@ -129,6 +135,7 @@
     [self.videoTypeLabel sizeToFit];
     [self.videoPropertyTypeLabel sizeToFit];
     [self.dateLabel sizeToFit];
+    [self.recommentLabel sizeToFit];
     
     CGRect frame = self.titleLabel.frame;
     self.titleLabel.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
@@ -153,6 +160,9 @@
     
     frame = self.dateLabel.frame;
     self.dateLabel.frame = CGRectMake(0, CGRectGetMaxY(self.videoPropertyTypeLabel.frame), frame.size.width, frame.size.height);
+    
+    frame = self.recommentLabel.frame;
+    self.recommentLabel.frame = CGRectMake(0, CGRectGetMaxY(self.dateLabel.frame) + 20, self.bounds.size.width, frame.size.height);
 }
 
 /*

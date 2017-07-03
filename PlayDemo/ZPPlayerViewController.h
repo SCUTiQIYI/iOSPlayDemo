@@ -8,11 +8,24 @@
 
 #import <UIKit/UIKit.h>
 @class ZPVideoInfo;
+
+@protocol ZPPlayerViewControllerDelegate <NSObject>
+@optional
+-(void)presentPlayerVCDidClose;
+
+@end
+
 /**
  *  播放器页面
  */
 @interface ZPPlayerViewController : UIViewController
-
+/**
+ *  播放视频模型
+ */
 @property (nonatomic, strong) ZPVideoInfo *videoInfo;
 
+/**
+ *  代理，一般指示之前跳转过来的播放器，用于控制继续播放
+ */
+@property (nonatomic, weak) id<ZPPlayerViewControllerDelegate> delegate;
 @end

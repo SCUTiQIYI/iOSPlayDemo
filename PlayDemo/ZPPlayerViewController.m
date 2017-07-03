@@ -14,11 +14,24 @@
 #import "ZPTools.h"
 #import "MBProgressHUD.h"
 #import "ZPVideoInfoView.h"
+#import "AFNetworking.h"
+#import "ZPChannelPageViewCell.h"
 #import <MediaPlayer/MediaPlayer.h>
 
 
 #define KIPhone_AVPlayerRect_mwidth 320
 #define KIPhone_AVPlayerRect_mheight 180
+
+/**
+ *  搜索接口
+ *  使用搜索作为推荐
+ */
+static NSString* const kSearchBaseURL = @"http://iface.qiyi.com/openapi/batch/search";
+/**
+ *  推荐的条目数量
+ */
+static const NSUInteger kRelatedRecomendPageSize = 10;
+
 /**不点击画面，隐藏进度条时长*/
 static const NSTimeInterval kZPHideSubviewDuration = 5.0f;
 /**隐藏进度条动画时长*/
@@ -40,7 +53,7 @@ static const CGFloat kZPPlayerViewSubViewMargin = 5.0f;
  *  状态弹出框的现实时长
  */
 static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
-@interface ZPPlayerViewController () <QYPlayerControllerDelegate, ZPVideoProgressBarDelegate, DCPathButtonDelegate>
+@interface ZPPlayerViewController () <QYPlayerControllerDelegate, ZPVideoProgressBarDelegate, DCPathButtonDelegate, ZPPlayerViewControllerDelegate, UIViewControllerTransitioningDelegate, UITableViewDataSource, UITableViewDelegate>
 /**
  *  播放器
  */
@@ -77,6 +90,19 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
  *  显示截图
  */
 @property (nonatomic, weak) UIImageView *screenShotImageView;
+
+/**
+ *  推荐结果tableView
+ */
+@property (nonatomic, weak) UITableView *tableView;
+/**
+ *  推荐结果模型
+ */
+@property (nonatomic, strong) NSMutableArray *recommendVideos;
+/**
+ *  播放到哪个时间
+ */
+@property (nonatomic, assign) CGFloat curplaytime;
 /*
 //保存截图按钮
 @property (nonatomic, weak) UIButton *saveImageButton;
@@ -99,6 +125,7 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
  *  用于计时隐藏进度条
  */
 @property (nonatomic, strong) NSTimer *timer;
+
 
 @end
 
@@ -129,6 +156,11 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
     }
     [self removeSubView];
     self.playController.view.transform = CGAffineTransformIdentity;
+    if (self.delegate != nil) {
+        if ([self.delegate respondsToSelector:@selector(presentPlayerVCDidClose)]) {
+            [self.delegate performSelector:@selector(presentPlayerVCDidClose)];
+        }
+    }
     NSLog(@"player controller dealloc");
 }
 
@@ -140,6 +172,14 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
 }
 
 #pragma mark - Setter
+/**
+ *  设置视频模型
+ */
+-(void)setVideoInfo:(ZPVideoInfo *)videoInfo {
+    _videoInfo = videoInfo;
+    [self fetchDataWithKey:videoInfo.title];
+}
+
 /**
  *  设置播放状态
  */
@@ -278,8 +318,8 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
     [self createSuspendButton];
     [self createScreenShootView];
     
-    
-    [self createVideoInfoView];
+    [self setupTableView];
+//    [self createVideoInfoView];
 }
 /**
  *  添加播放器
@@ -519,21 +559,51 @@ static const CGFloat ScreenShootViewScale = 0.2f;
 //    shareImageBtn.backgroundColor = [UIColor greenColor];
 }
 
-static const CGFloat StatuesBarHeight = 20.0f;
 
--(void)createVideoInfoView {
+-(void)setupTableView {
+    CGSize windowSize = [UIApplication sharedApplication].keyWindow.bounds.size;
+    CGFloat tableViewW = windowSize.width;
+    CGFloat tableViewH = windowSize.height - self.playController.view.bounds.size.height;
+    CGFloat tableViewX = 0;
+    CGFloat tableViewY = self.playController.view.bounds.size.height + StatuesBarHeight;
+    CGRect tableFrame = CGRectMake(tableViewX, tableViewY, tableViewW, tableViewH);
+    UITableView *tableView = [[UITableView alloc]initWithFrame:tableFrame style:UITableViewStylePlain];
+    tableView.tableHeaderView = [self createVideoInfoView];
+    tableView.dataSource = self;
+    tableView.delegate = self;
+    tableView.rowHeight = kCellMargin + kCellImageHeight + kCellMargin;
+    [self.view addSubview:tableView];
+    [self.view sendSubviewToBack:tableView];
+    self.tableView = tableView;
+}
+
+static const CGFloat StatuesBarHeight = 20.0f;
+-(ZPVideoInfoView*)createVideoInfoView {
     ZPVideoInfoView *infoView = [[ZPVideoInfoView alloc]init];
     infoView.info = self.videoInfo;
 //    infoView.backgroundColor = [UIColor blueColor];
     CGSize windowSize = [UIApplication sharedApplication].keyWindow.bounds.size;
     CGFloat infoViewW = windowSize.width;
-    CGFloat infoViewH = windowSize.height - self.playController.view.bounds.size.height;
+    CGFloat infoViewH = 180;
     CGFloat infoViewX = 0;
     CGFloat infoViewY = self.playController.view.bounds.size.height + StatuesBarHeight;
     infoView.frame = CGRectMake(infoViewX, infoViewY, infoViewW, infoViewH);
-    [self.view addSubview:infoView];
-    [self.view sendSubviewToBack:infoView];
+    return infoView;
 }
+
+//-(void)createVideoInfoView {
+//    ZPVideoInfoView *infoView = [[ZPVideoInfoView alloc]init];
+//    infoView.info = self.videoInfo;
+////    infoView.backgroundColor = [UIColor blueColor];
+//    CGSize windowSize = [UIApplication sharedApplication].keyWindow.bounds.size;
+//    CGFloat infoViewW = windowSize.width;
+//    CGFloat infoViewH = windowSize.height - self.playController.view.bounds.size.height;
+//    CGFloat infoViewX = 0;
+//    CGFloat infoViewY = self.playController.view.bounds.size.height + StatuesBarHeight;
+//    infoView.frame = CGRectMake(infoViewX, infoViewY, infoViewW, infoViewH);
+//    [self.view addSubview:infoView];
+//    [self.view sendSubviewToBack:infoView];
+//}
 
 -(void)removeSubView {
     [self.fullScreenBtn removeFromSuperview];
@@ -555,7 +625,101 @@ static const CGFloat StatuesBarHeight = 20.0f;
 }
 */
 
+#pragma mark - NetWork Method
+/**
+ *  获取网络数据
+ */
+-(void)fetchDataWithKey:(NSString*)key {
+    if (key == nil) return;
+//    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    //1.确定搜索结果条数
+    int pageSize = 0;
+    if (self.recommendVideos.count == 0) {
+        pageSize = kRelatedRecomendPageSize;
+    } else {
+        pageSize = self.recommendVideos.count;
+    }
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSDictionary *para = @{ @"key" : key,
+                            @"from" : @"mobile_list",
+                            @"page_size" : [NSString stringWithFormat:@"%d", pageSize],
+                            @"version" : @"7.5",
+                            @"app_k" : @"f0f6c3ee5709615310c0f053dc9c65f2",
+                            @"app_v" : @"8.4",
+                            @"app_t" : @"0",
+                            @"platform_id" : @"12",
+                            @"dev_os" : @"10.3.1",
+                            @"dev_ua" : @"iPhone9,3",
+                            @"dev_hw" : @"%7B%22cpu%22%3A0%2C%22gpu%22%3A%22%22%2C%22mem%22%3A%2250.4MB%22%7D",
+                            @"net_sts" : @"1",
+                            @"scrn_sts" : @"1",
+                            @"scrn_res" : @"1334*750",
+                            @"scrn_dpi" : @"153600",
+                            @"qyid" : @"87390BD2-DACE- 497B-9CD4- 2FD14354B2A4",
+                            @"secure_v" : @"1",
+                            @"secure_p" : @"iPhone",
+                            @"core" : @"1",
+                            @"req_sn" : @"1493946331320",
+                            @"req_times" : @"1"};
+    
+    [manager GET:kSearchBaseURL parameters:para progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"search request success");
+        
+        NSDictionary *dataDict = responseObject;
+        NSNumber *code = dataDict[@"code"];
+        if ([code integerValue] != 100000) {
+            //获取数据失败
+            [self refetchDataWithKey:key AfterDelay:5.0f];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self searchDataFailed];
+//            });
+            return;
+        }
+        
+        //获取数据成功
+        NSArray *dictArr = dataDict[@"data"];
+        NSMutableArray *modelArr = [NSMutableArray array];
+        for (NSDictionary *dict in dictArr) {
+            [modelArr addObject:[ZPVideoInfo videoInfoWithDict:dict]];
+        }
+        self.recommendVideos = modelArr;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reloadData];
+        });
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        //网络请求失败
+        [self refetchDataWithKey:key AfterDelay:5.0f];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self requestFailed];
+//        });
+    }];
+}
+
+-(void)refetchDataWithKey:(NSString*)key AfterDelay:(NSTimeInterval)delay {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self fetchDataWithKey:key];
+    });
+    
+}
+
+-(void)reloadData {
+//    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    [self.tableView reloadData];
+//    [self cancelRefreshing];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [self.tableView reloadData];
+//    });
+}
+
 #pragma mark - User interative
+-(void)playVideoWithOffset:(CGFloat)offset {
+    [self createSubView];
+    [self initPlayerState];
+    [self addSingleTabGesture];
+//    [self.playController openPlayerByAlbumId:self.videoInfo.aID tvId:self.videoInfo.tvID isVip:self.videoInfo.isVip];
+    [self.playController play];
+}
 
 -(void)singleTabAtPlayerView {
     NSLog(@"tab at player view");
@@ -807,6 +971,42 @@ static bool kIsFullScreen;
             [self clickMuteButton];
             break;
     }
+}
+
+#pragma mark - Table view Data Source
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.recommendVideos.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    ZPVideoInfo *info = self.recommendVideos[indexPath.row];
+    ZPChannelPageViewCell *cell = [ZPChannelPageViewCell cellWithTableView:tableView];
+    cell.videoInfo = info;
+    return cell;
+}
+
+
+#pragma mark - Table view delegate
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ZPVideoInfo *videoInfo = self.recommendVideos[indexPath.row];
+    ZPPlayerViewController *playerVC = [[ZPPlayerViewController alloc]init];
+    playerVC.videoInfo = videoInfo;
+    playerVC.delegate = self;
+    [self removeSubView];
+    self.curplaytime = self.playController.currentPlaybackTime;
+
+    [self presentViewController:playerVC animated:YES completion:nil];
+}
+
+#pragma mark - ZPPlayerViewControllerDelegate
+
+-(void)presentPlayerVCDidClose {
+//    [self removeSubView];
+    [self playVideoWithOffset:self.curplaytime];
 }
 
 @end

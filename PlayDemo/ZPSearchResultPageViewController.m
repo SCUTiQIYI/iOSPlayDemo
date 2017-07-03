@@ -145,6 +145,7 @@ static const CGFloat kCloseButtonWidth = 50;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+
 #pragma mark - NetWork Method
 /**
  *  获取网络数据

@@ -53,7 +53,7 @@ static const CGFloat kZPPlayerViewSubViewMargin = 5.0f;
  *  状态弹出框的现实时长
  */
 static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
-@interface ZPPlayerViewController () <QYPlayerControllerDelegate, ZPVideoProgressBarDelegate, DCPathButtonDelegate, ZPPlayerViewControllerDelegate, UIViewControllerTransitioningDelegate, UITableViewDataSource, UITableViewDelegate,UIViewControllerTransitioningDelegate>
+@interface ZPPlayerViewController () <QYPlayerControllerDelegate, ZPVideoProgressBarDelegate, DCPathButtonDelegate, UIViewControllerTransitioningDelegate, UITableViewDataSource, UITableViewDelegate,UIViewControllerTransitioningDelegate>
 /**
  *  播放器
  */
@@ -90,7 +90,10 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
  *  显示截图
  */
 @property (nonatomic, weak) UIImageView *screenShotImageView;
-
+/**
+ *  搜索结果截图
+ */
+@property (nonatomic, weak) ZPVideoInfoView *videoInfoView;
 /**
  *  推荐结果tableView
  */
@@ -156,11 +159,6 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
     }
     [self removeSubView];
     self.playController.view.transform = CGAffineTransformIdentity;
-    if (self.delegate != nil) {
-        if ([self.delegate respondsToSelector:@selector(presentPlayerVCDidClose)]) {
-            [self.delegate performSelector:@selector(presentPlayerVCDidClose)];
-        }
-    }
     NSLog(@"player controller dealloc");
 }
 
@@ -320,6 +318,21 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
     
     [self setupTableView];
 //    [self createVideoInfoView];
+}
+
+-(void)reCreateSubView {
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    [self createBasePlayerController];
+    [self createFullScreenBtn];
+    [self creatOriginalScreenBtn];
+    [self createPlayBtn];
+    [self createCloseButton];
+    [self createPauseBtn];
+    [self createSuspendButton];
+    [self createScreenShootView];
+    
+    //    [self createVideoInfoView];
 }
 /**
  *  添加播放器
@@ -588,6 +601,7 @@ static const CGFloat StatuesBarHeight = 20.0f;
     CGFloat infoViewX = 0;
     CGFloat infoViewY = self.playController.view.bounds.size.height + StatuesBarHeight;
     infoView.frame = CGRectMake(infoViewX, infoViewY, infoViewW, infoViewH);
+    self.videoInfoView = infoView;
     return infoView;
 }
 
@@ -614,6 +628,7 @@ static const CGFloat StatuesBarHeight = 20.0f;
     [self.suspendBtn removeFromSuperview];
     [self.screenShotView removeFromSuperview];
     [self.screenShotImageView removeFromSuperview];
+//    self.tableView.tableHeaderView = nil;
 }
 
 /*
@@ -670,9 +685,6 @@ static const CGFloat StatuesBarHeight = 20.0f;
         if ([code integerValue] != 100000) {
             //获取数据失败
             [self refetchDataWithKey:key AfterDelay:5.0f];
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self searchDataFailed];
-//            });
             return;
         }
         
@@ -690,9 +702,6 @@ static const CGFloat StatuesBarHeight = 20.0f;
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         //网络请求失败
         [self refetchDataWithKey:key AfterDelay:5.0f];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [self requestFailed];
-//        });
     }];
 }
 
@@ -704,22 +713,10 @@ static const CGFloat StatuesBarHeight = 20.0f;
 }
 
 -(void)reloadData {
-//    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [self.tableView reloadData];
-//    [self cancelRefreshing];
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [self.tableView reloadData];
-//    });
 }
 
 #pragma mark - User interative
--(void)playVideoWithOffset:(CGFloat)offset {
-    [self createSubView];
-    [self initPlayerState];
-    [self addSingleTabGesture];
-//    [self.playController openPlayerByAlbumId:self.videoInfo.aID tvId:self.videoInfo.tvID isVip:self.videoInfo.isVip];
-    [self.playController play];
-}
 
 -(void)singleTabAtPlayerView {
     NSLog(@"tab at player view");
@@ -877,6 +874,25 @@ static const CGFloat StatuesBarHeight = 20.0f;
         [self muteSound];
     }
 }
+
+-(void) resetPlayingVideo:(ZPVideoInfo*)videoInfo {
+    self.videoInfo = videoInfo;
+    [self.playController stopPlayer];
+    [self removeSubView];
+    [self reCreateSubView];
+    
+    self.videoInfoView.info = videoInfo;
+    [self.videoInfoView setNeedsLayout];
+    
+    [self.playController openPlayerByAlbumId:videoInfo.aID tvId:videoInfo.tvID isVip:videoInfo.isVip];
+    [self.playController play];
+//    [self createSubView];
+    [self initPlayerState];
+    [self fetchDataWithKey:videoInfo.title];
+//    [self addSingleTabGesture];
+
+}
+
 #pragma mark - Other method
 static bool kIsFullScreen;
 
@@ -993,20 +1009,12 @@ static bool kIsFullScreen;
 #pragma mark - Table view delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ZPVideoInfo *videoInfo = self.recommendVideos[indexPath.row];
-    ZPPlayerViewController *playerVC = [[ZPPlayerViewController alloc]init];
-    playerVC.videoInfo = videoInfo;
-    playerVC.delegate = self;
-    [self removeSubView];
-    self.curplaytime = self.playController.currentPlaybackTime;
-    playerVC.transitioningDelegate = self;
-    [self presentViewController:playerVC animated:YES completion:nil];
-}
-
-#pragma mark - ZPPlayerViewControllerDelegate
-
--(void)presentPlayerVCDidClose {
-//    [self removeSubView];
-    [self playVideoWithOffset:self.curplaytime];
+    [self resetPlayingVideo:videoInfo];
+//    ZPPlayerViewController *playerVC = [[ZPPlayerViewController alloc]init];
+//    playerVC.videoInfo = videoInfo;
+//    playerVC.transitioningDelegate = self;
+//    self
+//    [self presentViewController:playerVC animated:YES completion:nil];
 }
 
 

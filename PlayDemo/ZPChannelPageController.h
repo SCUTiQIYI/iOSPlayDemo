@@ -12,6 +12,6 @@
 /**
  *  频道列表界面
  */
-@interface ZPChannelPageController : UITableViewController
+@interface ZPChannelPageController : UIViewController
 @property (nonatomic, strong) ZPChannel *channel;
 @end

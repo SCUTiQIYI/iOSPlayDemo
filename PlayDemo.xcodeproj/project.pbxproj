@@ -94,6 +94,8 @@
 		18E52A7C1EEFA6D500244A7A /* TYTabTitleViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E52A7B1EEFA6D500244A7A /* TYTabTitleViewCell.m */; };
 		18F4E25C1EEC20C000D5659C /* ZPVideoInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F4E25B1EEC20C000D5659C /* ZPVideoInfoView.m */; };
 		18F4E25F1EED5D9D00D5659C /* ZPChannelInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F4E25E1EED5D9D00D5659C /* ZPChannelInfo.m */; };
+		6C17D4151F0A6756003A385C /* ChannelCollectionViewCellDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C17D4141F0A6756003A385C /* ChannelCollectionViewCellDataModel.m */; };
+		6C17D4191F0A6C21003A385C /* ChannelCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C17D4181F0A6C21003A385C /* ChannelCollectionViewCell.m */; };
 		6C28EB951F07507C0097C579 /* PlayViewTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C28EB941F07507C0097C579 /* PlayViewTransitionAnimator.m */; };
 		6C28EB981F0753A90097C579 /* SearchPageTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C28EB971F0753A90097C579 /* SearchPageTransitionAnimator.m */; };
 		906BA1A01F029B5E003D60C7 /* libav.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 906BA19F1F029B5E003D60C7 /* libav.a */; };
@@ -329,6 +331,10 @@
 		18F4E25B1EEC20C000D5659C /* ZPVideoInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZPVideoInfoView.m; sourceTree = "<group>"; };
 		18F4E25D1EED5D9D00D5659C /* ZPChannelInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZPChannelInfo.h; sourceTree = "<group>"; };
 		18F4E25E1EED5D9D00D5659C /* ZPChannelInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZPChannelInfo.m; sourceTree = "<group>"; };
+		6C17D4131F0A6756003A385C /* ChannelCollectionViewCellDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelCollectionViewCellDataModel.h; sourceTree = "<group>"; };
+		6C17D4141F0A6756003A385C /* ChannelCollectionViewCellDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelCollectionViewCellDataModel.m; sourceTree = "<group>"; };
+		6C17D4171F0A6C21003A385C /* ChannelCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelCollectionViewCell.h; sourceTree = "<group>"; };
+		6C17D4181F0A6C21003A385C /* ChannelCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelCollectionViewCell.m; sourceTree = "<group>"; };
 		6C28EB931F07507C0097C579 /* PlayViewTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayViewTransitionAnimator.h; sourceTree = "<group>"; };
 		6C28EB941F07507C0097C579 /* PlayViewTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayViewTransitionAnimator.m; sourceTree = "<group>"; };
 		6C28EB961F0753A90097C579 /* SearchPageTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchPageTransitionAnimator.h; sourceTree = "<group>"; };
@@ -596,6 +602,8 @@
 			children = (
 				189629241EF03CD5005C3889 /* ZPChannelPageViewCell.h */,
 				189629251EF03CD5005C3889 /* ZPChannelPageViewCell.m */,
+				6C17D4171F0A6C21003A385C /* ChannelCollectionViewCell.h */,
+				6C17D4181F0A6C21003A385C /* ChannelCollectionViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -657,6 +665,7 @@
 		18A615671EEFE37E0081BEDD /* ChannelPage */ = {
 			isa = PBXGroup;
 			children = (
+				6C17D4161F0A6760003A385C /* Model */,
 				189629271EF03CDC005C3889 /* View */,
 				18A6156B1EEFE3AA0081BEDD /* Controller */,
 			);
@@ -964,6 +973,15 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
+		6C17D4161F0A6760003A385C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6C17D4131F0A6756003A385C /* ChannelCollectionViewCellDataModel.h */,
+				6C17D4141F0A6756003A385C /* ChannelCollectionViewCellDataModel.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		6C28EB921F074FB00097C579 /* TransitionAnimator */ = {
 			isa = PBXGroup;
 			children = (
@@ -1212,6 +1230,7 @@
 				189A116B1EF2A56B007B615C /* UIProgressView+AFNetworking.m in Sources */,
 				18AEF3471EF3CC020060C2D9 /* ZYBannerView.m in Sources */,
 				189A11681EF2A56B007B615C /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				6C17D4151F0A6756003A385C /* ChannelCollectionViewCellDataModel.m in Sources */,
 				18AEF3451EF3CC020060C2D9 /* ZYBannerFooter.m in Sources */,
 				E5F555C81EC0004F004DFC8D /* ViewController.m in Sources */,
 				189A116C1EF2A56B007B615C /* UIRefreshControl+AFNetworking.m in Sources */,
@@ -1286,6 +1305,7 @@
 				181B82811EF69F120040D451 /* SDWebImageDownloader.m in Sources */,
 				18A0B3301EEFBFF70058AABF /* ZPChannel.m in Sources */,
 				181B82851EF69F120040D451 /* UIButton+WebCache.m in Sources */,
+				6C17D4191F0A6C21003A385C /* ChannelCollectionViewCell.m in Sources */,
 				18AE602D1EF3886300F56F59 /* MJRefreshHeader.m in Sources */,
 				18A6157B1EEFE4D30081BEDD /* AFNetworkReachabilityManager.m in Sources */,
 				18AE602F1EF3886300F56F59 /* MJRefreshAutoNormalFooter.m in Sources */,

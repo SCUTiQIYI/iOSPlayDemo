@@ -11,7 +11,8 @@
 #import "ZPVideoInfo.h"
 #import "AFHTTPSessionManager.h"
 #import "ZPPlayerViewController.h"
-#import "ZPChannelPageViewCell.h"
+#import "ChannelCollectionViewCell.h"
+#import "ChannelCollectionViewCellDataModel.h"
 #import "MJRefresh.h"
 #import "MBProgressHUD.h"
 #import "PlayViewTransitionAnimator.h"
@@ -19,12 +20,12 @@
 static NSString* const kChannelBaseURL = @"http://iface.qiyi.com/openapi/batch/channel";
 static const NSUInteger kChannelPageSize = 30;
 
-@interface ZPChannelPageController () <UIViewControllerTransitioningDelegate>
+@interface ZPChannelPageController () <UIViewControllerTransitioningDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
 /**
  *  视频列表
  */
 @property (nonatomic, strong) NSMutableArray *videoList;
-
+@property (nonatomic, strong) UICollectionView *collectionView;
 @end
 
 @implementation ZPChannelPageController
@@ -32,10 +33,16 @@ static const NSUInteger kChannelPageSize = 30;
 #pragma mark - Controller Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.tableView.rowHeight = kCellImageHeight + 2 * kCellMargin;
-//    self.tableView.rowHeight = 150;
-//    [self fetchData];
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    CGFloat TVCellwidth = (self.view.frame.size.width - 40)/3;
+    layout.itemSize = CGSizeMake(TVCellwidth,TVCellwidth*4/3+20+15);
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width-20,self.view.frame.size.height ) collectionViewLayout:layout];
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
+    [self.view addSubview:self.collectionView];
+    [self.collectionView registerClass:[ChannelCollectionViewCell class] forCellWithReuseIdentifier:@"collectionCell"
+     ];
+    self.collectionView.backgroundColor = [UIColor whiteColor];
     [self setupRefreshControl];
 }
 
@@ -51,7 +58,7 @@ static const NSUInteger kChannelPageSize = 30;
     [header setTitle:@"松开加载" forState:MJRefreshStatePulling];
     [header setTitle:@"加载失败" forState:MJRefreshStateNoMoreData];
     
-    self.tableView.mj_header = header;
+    self.collectionView.mj_header = header;
     
     MJRefreshBackNormalFooter *footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [self fetchMoreData];
@@ -60,7 +67,7 @@ static const NSUInteger kChannelPageSize = 30;
     [footer setTitle:@"正在加载" forState:MJRefreshStateRefreshing];
     [footer setTitle:@"松开加载更多" forState:MJRefreshStatePulling];
     [footer setTitle:@"加载失败" forState:MJRefreshStateNoMoreData];
-    self.tableView.mj_footer = footer;
+    self.collectionView.mj_footer = footer;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -250,7 +257,7 @@ static const NSUInteger kChannelPageSize = 30;
  */
 -(void)reloadData {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
-    [self.tableView reloadData];
+    [self.collectionView reloadData];
     [self cancelRefreshing];
 }
 
@@ -259,39 +266,35 @@ static const NSUInteger kChannelPageSize = 30;
  *  停止上拉下拉转着的菊花
  */
 -(void)cancelRefreshing {
-    [self.tableView.mj_header endRefreshing];
-    [self.tableView.mj_footer endRefreshing];
+    [self.collectionView.mj_header endRefreshing];
+    [self.collectionView.mj_footer endRefreshing];
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.videoList.count;
 }
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    static NSString* cellID = @"ChannelPageCellIdentifier";
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-//    if (cell == nil) {
-//        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-//    }
-//    ZPVideoInfo *videoInfo = self.videoList[indexPath.row];
-//    [cell.textLabel setText:videoInfo.title];
-    
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ZPVideoInfo *info = self.videoList[indexPath.row];
-    
-    ZPChannelPageViewCell *cell = [ZPChannelPageViewCell cellWithTableView:tableView];
-    cell.videoInfo = info;
-    
+    ChannelCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"collectionCell" forIndexPath:indexPath];
+    ChannelCollectionViewCellDataModel *model = [[ChannelCollectionViewCellDataModel alloc] initWithDict:info];
+    cell.dataModel = model;
     return cell;
 }
 
-
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    ZPVideoInfo *videoInfo = self.videoList[indexPath.row];
+    ZPPlayerViewController *playerVC = [[ZPPlayerViewController alloc]init];
+    playerVC.videoInfo = videoInfo;
+    playerVC.transitioningDelegate = self;
+    [self presentViewController:playerVC animated:YES completion:nil];
+}
 
 /*
 // Override to support conditional editing of the table view.

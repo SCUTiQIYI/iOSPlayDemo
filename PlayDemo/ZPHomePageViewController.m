@@ -220,10 +220,11 @@
 //        case 4:
 //            VC = [[UIViewController alloc]init];
 //            break;
-        default:
+        default:{
             VC = [[ZPChannelPageController alloc]init];
             ((ZPChannelPageController*)VC).channel = self.channelList[index];
             break;
+        }
     }
     
     ZPChannel *channel = self.channelList[index];

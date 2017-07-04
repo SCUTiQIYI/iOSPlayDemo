@@ -65,10 +65,10 @@ static const CGFloat kVipViewSize = 12;
 
 #pragma mark - Create Subview
 -(void)createSubView {
-//    self.contentView.backgroundColor = [UIColor yellowColor];
-    UIImageView *coverView = [[UIImageView alloc]init];
     
-//    coverView.backgroundColor = [UIColor redColor];
+//  self.contentView.backgroundColor = [UIColor yellowColor];
+    UIImageView *coverView = [[UIImageView alloc]init];
+//  coverView.backgroundColor = [UIColor redColor];
     [self.contentView addSubview:coverView];
     self.coverView = coverView;
     

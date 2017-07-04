@@ -8,6 +8,7 @@
 
 #import "ZPRecommendNewViewController.h"
 #import "ZPChannelInfo.h"
+#import "AFNetworking.h"
 #import "ZPVideoInfo.h"
 #import "ZPPlayerViewController.h"
 #import "ZYBannerView.h"
@@ -26,11 +27,20 @@
 static const CGFloat kSearchBarHeight = 40.0f;
 //static const CGFloat kCycleViewHeight = 180.0f;
 static const CGFloat kViewMargin = 10.0f;
-static const NSTimeInterval kRefetchDataInterval = 5.0f;
+static const NSTimeInterval kRefetchDataInterval = 3.0f;
+
+/**
+ *  频道基本URL
+ */
+static NSString* const kChannelBaseURL = @"http://iface.qiyi.com/openapi/batch/channel";
+
+/**
+ *  首页URL
+ */
 static NSString* const kRecommendURL = @"http://iface.qiyi.com/openapi/batch/recommend?app_k=f0f6c3ee5709615310c0f053dc9c65f2&app_v=8.4&app_t=0&platform_id=12&dev_os=10.3.1&dev_ua=iPhone9,3&dev_hw=%7B%22cpu%22%3A0%2C%22gpu%22%3A%22%22%2C%22mem%22%3A%2250.4MB%22%7D&net_sts=1&scrn_sts=1&scrn_res=1334*750&scrn_dpi=153600&qyid=87390BD2-DACE-497B-9CD4-2FD14354B2A4&secure_v=1&secure_p=iPhone&core=1&req_sn=1493946331320&req_times=1";
 
 /**
- *  排行榜借口，以此数据作为热搜关键词
+ *  排行榜接口，以此数据作为热搜关键词
  */
 static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/recommend?app_k=f0f6c3ee5709615310c0f053dc9c65f2&app_v=8.4&app_t=0&platform_id=12&dev_os=10.3.1&dev_ua=iPhone9,3&dev_hw=%7B%22cpu%22%3A0%2C%22gpu%22%3A%22%22%2C%22mem%22%3A%2250.4MB%22%7D&net_sts=1&scrn_sts=1&scrn_res=1334*750&scrn_dpi=153600&qyid=87390BD2-DACE-497B-9CD4-2FD14354B2A4&secure_v=1&secure_p=iPhone&core=1&req_sn=1493946331320&req_times=1";
 
@@ -46,6 +56,18 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
  *  频道列表
  */
 @property (nonatomic, strong) NSArray *channelsInfos;
+/**
+ *  用于换一批的视频模型数据
+ */
+@property (nonatomic, strong) NSArray *moiveVideos;
+@property (nonatomic, assign) NSUInteger moiveIndex;
+@property (nonatomic ,strong) NSArray *televisionVideos;
+@property (nonatomic, assign) NSUInteger televisionIndex;
+@property (nonatomic, strong) NSArray *newsVideos;
+@property (nonatomic, assign) NSUInteger newsIndex;
+@property (nonatomic, strong) NSArray *vatietyShowVideos;
+@property (nonatomic, assign) NSUInteger vatietyIndex;
+
 /**
  *  上方的搜索框
  */
@@ -73,7 +95,7 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setWidth];
-    
+    [self setupModelIndex];
     [self requestUrl];
     [self setupSubView];
     [self fetchHotSearchsData];
@@ -88,6 +110,16 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+/**
+ *  初始化模型下标
+ */
+-(void)setupModelIndex {
+    _newsIndex = 0;
+    _moiveIndex = 0;
+    _vatietyIndex = 0;
+    _televisionIndex = 0;
 }
 
 /**
@@ -183,6 +215,10 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
 
 #pragma network request
 
+/**
+ *  请求热搜词数据
+ *  用于缓存搜索的热搜词
+ */
 -(void)fetchHotSearchsData {
     //1.创建请求
     NSURL *url = [NSURL URLWithString:kPopChartURL];
@@ -247,9 +283,84 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
     [dataTask resume];
 }
 
+/**
+ *  获取频道数据
+ */
+-(void)fetchChannelDataWithChannelName:(NSString*)channelName {
+//    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    int pageSize = 30;
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSDictionary *para = @{ @"type" : @"detail",
+                            @"channel_name" : channelName,
+                            @"mode" : @"11",
+                            //                     @"is_purchase" : @"2",
+                            @"page_size" : [NSString stringWithFormat:@"%d", pageSize],
+                            @"version" : @"7.5",
+                            @"app_k" : @"f0f6c3ee5709615310c0f053dc9c65f2",
+                            @"app_v" : @"8.4",
+                            @"app_t" : @"0",
+                            @"platform_id" : @"12",
+                            @"dev_os" : @"10.3.1",
+                            @"dev_ua" : @"iPhone9,3",
+                            
+                            @"dev_hw" : @"%7B%22cpu%22%3A0%2C%22gpu%22%3A%22%22%2C%22mem%22%3A%2250.4MB%22%7D",
+                            
+                            @"net_sts" : @"1",
+                            @"scrn_sts" : @"1",
+                            @"scrn_res" : @"1334*750",
+                            @"scrn_dpi" : @"153600",
+                            @"qyid" : @"87390BD2-DACE- 497B-9CD4- 2FD14354B2A4",
+                            @"secure_v" : @"1",
+                            @"secure_p" : @"iPhone",
+                            @"core" : @"1",
+                            @"req_sn" : @"1493946331320",
+                            @"req_times" : @"1"};
+    
+    [manager GET:kChannelBaseURL parameters:para progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"channel page request success");
+        
+        NSDictionary *dataDict = responseObject;
+        NSNumber *code = dataDict[@"code"];
+        if ([code integerValue] != 100000) {
+            //获取数据失败
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kRefetchDataInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self fetchChannelDataWithChannelName:channelName];
+            });
+            return;
+        }
+        
+        //获取数据成功
+        //保存数据
+        NSArray *dictArr = dataDict[@"data"][@"video_list"];
+        NSMutableArray *modelArr = [NSMutableArray array];
+        for (NSDictionary *dict in dictArr) {
+            [modelArr addObject:[ZPVideoInfo videoInfoWithDict:dict]];
+        }
+        
+        //根据分类将数据放到相应的位置
+        NSString *channelName = dataDict[@"data"][@"channelName"];
+        if ([channelName isEqualToString:@"电影"]) {
+            self.moiveVideos = modelArr;
+        } else if ([channelName isEqualToString:@"电视剧"]) {
+            self.televisionVideos = modelArr;
+        } else if ([channelName isEqualToString:@"综艺"]) {
+            self.vatietyShowVideos = modelArr;
+        } else if ([channelName isEqualToString:@"资讯"]) {
+            self.newsVideos = modelArr;
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        //网络请求失败
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kRefetchDataInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self fetchChannelDataWithChannelName:channelName];
+        });
+    }];
+}
+
+
 
 /**
- *  请求网络数据
+ *  请求首页推荐数据数据
  */
 -(void)requestUrl
 {
@@ -275,11 +386,15 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
             
             NSMutableArray *dataArr = [NSMutableArray array];
             for (NSDictionary *dict in data) {
-                [dataArr addObject:[ZPChannelInfo channelInfoWithDict:dict]];
+                ZPChannelInfo *channel = [ZPChannelInfo channelInfoWithDict:dict];
+                if (![channel.title isEqualToString:@"轮播图"]) {
+                    [self fetchChannelDataWithChannelName:channel.title];
+                }
+                [dataArr addObject:channel];
             }
             //将咨询行在展示行的最后
             if (dataArr.count >= 2) {
-                ZPChannelInfo *channel = dataArr[1];;
+                ZPChannelInfo *channel = dataArr[1];
                 [dataArr removeObjectAtIndex:1];
                 [dataArr addObject:channel];
             }
@@ -429,7 +544,13 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
     if([kind isEqualToString:UICollectionElementKindSectionFooter]){
         CollectionReusableFooterView *foot= [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"FootView" forIndexPath:indexPath];
         foot.delegate = self;
-        foot.btn.tag = indexPath.section;
+        
+        ZPChannelInfo *channel = self.channelsInfos[indexPath.section + 1];
+        NSString *footerBtnTitle = [NSString stringWithFormat:@"  更多%@", channel.title];
+        [foot.moreVideoBtn setTitle:footerBtnTitle forState:UIControlStateNormal];
+
+        foot.moreVideoBtn.tag = indexPath.section;
+        foot.changeVideoBtn.tag = indexPath.section;
         return foot;
         
     }
@@ -443,18 +564,67 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
     playVC.videoInfo = video;
     playVC.transitioningDelegate = self;
     
-    UITableViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    UITableViewCell *cell = (UITableViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
     UIWindow * window=[[[UIApplication sharedApplication] delegate] window];
     _destinationFrame = [cell convertRect:cell.bounds toView:window];
     [self presentViewController:playVC animated:YES completion:nil];
 }
 
 #pragma mark - CollectionReusableFooterViewDelegate
--(void)CollectionReusableFooterViewBtnClick:(UIButton *)btn {
+
+-(void)CollectionReusableFooterViewMoreVideoBtnClick:(UIButton *)btn {
     ZPChannelInfo *channel = self.channelsInfos[btn.tag + 1];
     if ([self.delegate respondsToSelector:@selector(moreVideoButtonDidClick:)]) {
         [self.delegate performSelector:@selector(moreVideoButtonDidClick:) withObject:channel.title];
     }
+}
+
+-(void)CollectionReusableFooterViewChangeVideoBtnClick:(UIButton *)btn {
+    ZPChannelInfo *channel = self.channelsInfos[btn.tag + 1];
+//    NSLog(@"%d", btn.tag);
+    NSString *channelName = channel.title;
+    if ([channelName isEqualToString:@"电影"]) {
+        if (self.moiveVideos.count == 0) return;
+        NSMutableArray *newArr = [NSMutableArray array];
+        for (int i = 0; i < 6; i++) {
+            [newArr addObject:self.moiveVideos[self.moiveIndex + i]];
+        }
+        self.moiveIndex += 6;
+        self.moiveIndex %= 30;
+        ZPChannelInfo *channel = self.channelsInfos[btn.tag + 1];
+        channel.video_list = newArr;
+    } else if ([channelName isEqualToString:@"电视剧"]) {
+        if (self.televisionVideos.count == 0) return;
+        NSMutableArray *newArr = [NSMutableArray array];
+        for (int i = 0; i < 6; i++) {
+            [newArr addObject:self.televisionVideos[self.televisionIndex + i]];
+        }
+        self.televisionIndex += 6;
+        self.televisionIndex %= 30;
+        ZPChannelInfo *channel = self.channelsInfos[btn.tag + 1];
+        channel.video_list = newArr;
+    } else if ([channelName isEqualToString:@"综艺"]) {
+        if (self.vatietyShowVideos.count == 0) return;
+        NSMutableArray *newArr = [NSMutableArray array];
+        for (int i = 0; i < 6; i++) {
+            [newArr addObject:self.vatietyShowVideos[self.vatietyIndex + i]];
+        }
+        self.vatietyIndex += 6;
+        self.vatietyIndex %= 30;
+        ZPChannelInfo *channel = self.channelsInfos[btn.tag + 1];
+        channel.video_list = newArr;
+    } else if ([channelName isEqualToString:@"资讯"]) {
+        if (self.newsVideos.count == 0) return;
+        NSMutableArray *newArr = [NSMutableArray array];
+        for (int i = 0; i < 6; i++) {
+            [newArr addObject:self.newsVideos[self.newsIndex + i]];
+        }
+        self.newsIndex += 6;
+        self.newsIndex %= 30;
+        ZPChannelInfo *channel = self.channelsInfos[btn.tag + 1];
+        channel.video_list = newArr;
+    }
+    [self.collectionView reloadData];
 }
 
 #pragma mark - UISearchBarDelegate

@@ -23,6 +23,10 @@
 #define KIPhone_AVPlayerRect_mheight 180
 
 /**
+ *  请求推荐数据失败重新请求的时间
+ */
+static const NSTimeInterval kReFetchDataTime = 3.0f;
+/**
  *  搜索接口
  *  使用搜索作为推荐
  */
@@ -684,7 +688,7 @@ static const CGFloat StatuesBarHeight = 20.0f;
         NSNumber *code = dataDict[@"code"];
         if ([code integerValue] != 100000) {
             //获取数据失败
-            [self refetchDataWithKey:key AfterDelay:5.0f];
+            [self refetchDataWithKey:key AfterDelay:kReFetchDataTime];
             return;
         }
         
@@ -701,7 +705,7 @@ static const CGFloat StatuesBarHeight = 20.0f;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         //网络请求失败
-        [self refetchDataWithKey:key AfterDelay:5.0f];
+        [self refetchDataWithKey:key AfterDelay:kReFetchDataTime];
     }];
 }
 

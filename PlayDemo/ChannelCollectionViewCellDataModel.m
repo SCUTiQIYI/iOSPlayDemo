@@ -14,6 +14,7 @@
     if (self = [super init]) {
         _imgUrl = info.img;
         _text = info.title;
+        _isVip = info.isVip;
         if ([info.title isEqualToString:info.shortTitle]) {
             _detailText = [NSString stringWithFormat:@"%@",info.dateFormat];
         } else {

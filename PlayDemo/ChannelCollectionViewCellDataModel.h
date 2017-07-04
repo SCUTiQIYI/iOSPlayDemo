@@ -12,7 +12,7 @@
 @property (nonatomic, copy)NSString *imgUrl;
 @property (nonatomic, copy)NSString *text;
 @property (nonatomic, copy)NSString *detailText;
-
+@property (nonatomic, copy)NSString *isVip;
 - (instancetype) initWithDict:(ZPVideoInfo *)info;
 
 @end

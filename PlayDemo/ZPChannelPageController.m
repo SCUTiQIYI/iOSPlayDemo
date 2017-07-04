@@ -270,7 +270,7 @@ static const NSUInteger kChannelPageSize = 30;
     [self.collectionView.mj_footer endRefreshing];
 }
 
-#pragma mark - Table view data source
+#pragma mark - Collection View Data Source
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
@@ -288,6 +288,7 @@ static const NSUInteger kChannelPageSize = 30;
     return cell;
 }
 
+#pragma mark -Collection View Delegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     ZPVideoInfo *videoInfo = self.videoList[indexPath.row];
     ZPPlayerViewController *playerVC = [[ZPPlayerViewController alloc]init];

@@ -11,7 +11,7 @@
 #import "ViewController.h"
 #import "ZPSearchResultPageViewController.h"
 #import "QYPlayerController.h"
-
+#import "AFNetworking.h"
 @interface AppDelegate ()
 
 @end
@@ -38,7 +38,25 @@
     return YES;
 }
 
+static AFHTTPSessionManager *manager ;
+static AFURLSessionManager *urlsession ;
 
+-(AFHTTPSessionManager *)sharedHTTPSession{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        manager = [AFHTTPSessionManager manager];
+        manager.requestSerializer.timeoutInterval = 10;
+    });
+    return manager;
+}
+
+-(AFURLSessionManager *)sharedURLSession{
+    static dispatch_once_t onceToken2;
+    dispatch_once(&onceToken2, ^{
+        urlsession = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    });
+    return urlsession;
+}
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {

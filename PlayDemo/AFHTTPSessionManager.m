@@ -50,6 +50,16 @@
 + (instancetype)manager {
     return [[[self class] alloc] initWithBaseURL:nil];
 }
+static AFHTTPSessionManager *manager ;
+
+- (AFHTTPSessionManager *)sharedHTTPSession {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        manager = [AFHTTPSessionManager manager];
+        manager.requestSerializer.timeoutInterval = 10;
+    });
+    return manager;
+}
 
 - (instancetype)init {
     return [self initWithBaseURL:nil];

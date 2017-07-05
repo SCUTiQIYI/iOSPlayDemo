@@ -19,7 +19,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "PlayViewTransitionAnimator.h"
 #import "PlayDemo-Swift.h"
-
+#import "AppDelegate.h"
 #define KIPhone_AVPlayerRect_mwidth 320
 #define KIPhone_AVPlayerRect_mheight 180
 
@@ -642,7 +642,8 @@ static const CGFloat StatuesBarHeight = 20.0f;
     } else {
         pageSize = self.recommendVideos.count;
     }
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    AFHTTPSessionManager *manager = [app sharedHTTPSession];
     NSDictionary *para = @{ @"key" : key,
                             @"from" : @"mobile_list",
                             @"page_size" : [NSString stringWithFormat:@"%d", pageSize],

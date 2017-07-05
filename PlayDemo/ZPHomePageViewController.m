@@ -5,7 +5,7 @@
 //  Created by HZP on 2017/6/13.
 //  Copyright © 2017年 liuxiaodan. All rights reserved.
 //
-
+//#import "AppDelegate.h"
 #import "ZPHomePageViewController.h"
 #import "ActivityIndicatorView.h"
 #import "TYTabButtonPagerController.h"
@@ -109,8 +109,13 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     //2.创建连接
+    
+    
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *sesson = [NSURLSession sessionWithConfiguration:configuration];
+    
+//    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    AFURLSessionManager *m = [app sharedURLSession];
     
     //3.创建任务
     NSURLSessionDataTask *dataTask = [sesson dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -147,6 +152,7 @@
                 [self removeLoadingView];
                 [self.pagerController reloadData];
             });
+            [sesson invalidateAndCancel];
         }
     }];
     

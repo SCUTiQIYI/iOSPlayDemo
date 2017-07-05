@@ -23,8 +23,8 @@
 #import "MJRefresh.h"
 #import "PYSearchViewController.h"
 #import "PlayViewTransitionAnimator.h"
-
 #import "PlayDemo-Swift.h"
+#import "AppDelegate.h"
 //#import "PlayDemo-Bridging-Header.h"
 //#import "History/HistoryManager.swift"
 //#import "History/HistoryTableViewController.swift"
@@ -248,8 +248,8 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     //2.创建连接
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *sesson = [NSURLSession sessionWithConfiguration:configuration];
+   // NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *sesson = [NSURLSession sharedSession];
     
     //3.创建任务
     NSURLSessionDataTask *dataTask = [sesson dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -312,7 +312,8 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
 -(void)fetchChannelDataWithChannelName:(NSString*)channelName {
 //    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     int pageSize = 30;
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    AFHTTPSessionManager *manager = [app sharedHTTPSession];
     NSDictionary *para = @{ @"type" : @"detail",
                             @"channel_name" : channelName,
                             @"mode" : @"11",
@@ -430,7 +431,9 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
                     [self reloadData];
                 });
             }
+            [sesson invalidateAndCancel];
         }
+      
     }];
     
     //4.执行任务

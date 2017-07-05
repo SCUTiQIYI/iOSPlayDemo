@@ -16,6 +16,7 @@
 #import "MJRefresh.h"
 #import "MBProgressHUD.h"
 #import "PlayViewTransitionAnimator.h"
+#import "AppDelegate.h"
 
 static NSString* const kChannelBaseURL = @"http://iface.qiyi.com/openapi/batch/channel";
 static const NSUInteger kChannelPageSize = 30;
@@ -93,7 +94,8 @@ static const NSUInteger kChannelPageSize = 30;
     } else {
         pageSize = self.videoList.count;
     }
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    AFHTTPSessionManager *manager = [app sharedHTTPSession];
     NSDictionary *para = @{ @"type" : @"detail",
                     @"channel_name" : self.channel.name,
                             @"mode" : @"11",

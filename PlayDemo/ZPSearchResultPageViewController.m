@@ -14,7 +14,7 @@
 #import "MJRefresh.h"
 #import "MBProgressHUD.h"
 #import "PlayViewTransitionAnimator.h"
-
+#import "AppDelegate.h"
 
 static NSString* const kSearchBaseURL = @"http://iface.qiyi.com/openapi/batch/search";
 static const NSUInteger kSearchPageSize = 30;
@@ -161,7 +161,8 @@ static const CGFloat kCloseButtonWidth = 50;
         pageSize = self.searchResults.count;
     }
     self.searchKey = key;
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    AFHTTPSessionManager *manager = [app sharedHTTPSession];
     NSDictionary *para = @{ @"key" : key,
                            @"from" : @"mobile_list",
                       @"page_size" : [NSString stringWithFormat:@"%d", pageSize],
@@ -229,7 +230,8 @@ static const CGFloat kCloseButtonWidth = 50;
     }
     
     int pageIndex = self.searchResults.count / kSearchPageSize + 1;
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    AFHTTPSessionManager *manager = [app sharedHTTPSession];
     
     NSDictionary *para = @{ @"key" : self.searchKey,
                             @"from" : @"mobile_list",

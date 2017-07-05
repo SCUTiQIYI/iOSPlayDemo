@@ -8,7 +8,7 @@
 
 import Foundation
 
-class DatabaseManager {
+class DatabaseManager:NSObject {
     
     internal var myData:NSMutableDictionary{
         get{

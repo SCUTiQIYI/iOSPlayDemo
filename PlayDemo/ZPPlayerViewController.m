@@ -18,6 +18,7 @@
 #import "ZPChannelPageViewCell.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "PlayViewTransitionAnimator.h"
+#import "PlayDemo-Swift.h"
 
 #define KIPhone_AVPlayerRect_mwidth 320
 #define KIPhone_AVPlayerRect_mheight 180
@@ -330,6 +331,8 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
     
     ZPVideoInfo *videoInfo = self.videoInfo;
     [playController openPlayerByAlbumId:videoInfo.aID tvId:videoInfo.tvID isVip:videoInfo.isVip];
+    
+    [[HistoryManager sharedInstance] addHistoryWithHistory:videoInfo];
     
 //    NSString *tvid = videoInfo.tvID;
 //    NSInteger integ = [tvid integerValue];
@@ -870,6 +873,10 @@ static const CGFloat StatuesBarHeight = 20.0f;
     [self.videoInfoView setNeedsLayout];
     
     [self.playController openPlayerByAlbumId:videoInfo.aID tvId:videoInfo.tvID isVip:videoInfo.isVip];
+    [[HistoryManager sharedInstance] addHistoryWithHistory:videoInfo];
+    
+    
+    
     [self.playController play];
 //    [self createSubView];
     [self initPlayerState];

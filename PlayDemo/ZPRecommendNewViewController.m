@@ -24,7 +24,13 @@
 #import "PYSearchViewController.h"
 #import "PlayViewTransitionAnimator.h"
 
+#import "PlayDemo-Swift.h"
+//#import "PlayDemo-Bridging-Header.h"
+//#import "History/HistoryManager.swift"
+//#import "History/HistoryTableViewController.swift"
+
 static const CGFloat kSearchBarHeight = 40.0f;
+static const CGFloat kTopButtonWidth = 50.0f;
 //static const CGFloat kCycleViewHeight = 180.0f;
 static const CGFloat kViewMargin = 10.0f;
 static const NSTimeInterval kRefetchDataInterval = 3.0f;
@@ -126,6 +132,7 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
  *  创建子控件
  */
 -(void)setupSubView {
+    [self setupHistoryButton];
     [self setupSearchBar];
     [self setupCollectionView];
     [self setupRefreshControl];
@@ -145,14 +152,30 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
     self.collectionView.mj_header = header;
 }
 
+
+/**
+ *  创建历史按钮
+ */
+-(void)setupHistoryButton {
+    UIButton *historyButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [historyButton setTitle:@"历史" forState:UIControlStateNormal];
+    [historyButton addTarget:self action:@selector(historyBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
+    CGFloat btnX = 0;
+    CGFloat btnY = 0;
+    CGFloat btnW = kTopButtonWidth;
+    CGFloat btnH = kSearchBarHeight;
+    historyButton.frame = CGRectMake(btnX, btnY, btnW, btnH);
+    [self.view addSubview:historyButton];
+}
+
 /**
  *  创建搜索框
  */
 -(void)setupSearchBar {
     UISearchBar *searchBar = [[UISearchBar alloc]init];
     CGFloat searchBarH = kSearchBarHeight;
-    CGFloat searchBarW = self.view.bounds.size.width;
-    CGFloat searchBarX = 0;
+    CGFloat searchBarW = self.view.bounds.size.width - kTopButtonWidth;
+    CGFloat searchBarX = kTopButtonWidth;
     CGFloat searchBarY = 0;
     searchBar.frame = CGRectMake(searchBarX, searchBarY, searchBarW, searchBarH);
     searchBar.placeholder = @"搜索";
@@ -432,6 +455,21 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
     [self.collectionView reloadData];
 }
 
+#pragma mark - User Interaction
+
+-(void) historyBtnDidClick {
+    
+    
+//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:searchVC];
+//    nav.transitioningDelegate = self;
+//    [self presentViewController:nav  animated:YES completion:nil];
+    
+    
+    HistoryTableViewController *history = [[HistoryTableViewController alloc]init];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:history];
+    nav.transitioningDelegate = self;
+    [self presentViewController:nav  animated:YES completion:nil];
+}
 
 
 #pragma mark - ZYBannerViewDataSource

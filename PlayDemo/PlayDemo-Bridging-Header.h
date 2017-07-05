@@ -3,3 +3,5 @@
 //
 #import "ZPVideoInfo.h"
 #import "ZPChannelPageViewCell.h"
+#import "ZPPlayerViewController.h"
+#import "PlayViewTransitionAnimator.h"

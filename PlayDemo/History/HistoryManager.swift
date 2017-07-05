@@ -109,4 +109,10 @@ class HistoryManager: DatabaseManager {
     func getHistoryList() -> [String]{
         return myKey.copy() as! [String];
     }
+    
+    func removeAllHistory(){
+        let key = NSMutableArray()
+        let data = NSMutableDictionary()
+        write(data: data, key: key)
+    }
 }

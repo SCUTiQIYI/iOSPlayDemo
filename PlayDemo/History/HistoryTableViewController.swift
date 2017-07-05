@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HistoryTableViewController: UITableViewController {
+class HistoryTableViewController: UITableViewController,UIViewControllerTransitioningDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -17,11 +17,23 @@ class HistoryTableViewController: UITableViewController {
         self.tableView.contentInset = insect;
         self.tableView.rowHeight = kCellMargin + kCellImageHeight + kCellMargin;
         
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "返回", style: .plain, target: self, action: #selector(back))
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "清除", style: .plain, target: self, action: #selector(clean))
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    func back(){
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
+    func clean(){
+        HistoryManager.sharedInstance.removeAllHistory()
+        self.tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,6 +64,39 @@ class HistoryTableViewController: UITableViewController {
 
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let videoList = HistoryManager.sharedInstance.getHistoryList()
+        let videoId = videoList[indexPath.row]
+        if let videoInfo = HistoryManager.sharedInstance.getHistory(id: videoId){
+            let playerVC = ZPPlayerViewController.init()
+            playerVC.videoInfo = videoInfo
+            playerVC.transitioningDelegate = self
+            self.navigationController?.present(playerVC, animated: true, completion: nil)
+        }
+        
+    }
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        let animator = PlayViewTransitionAnimator()
+        return animator
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        let animator = PlayViewTransitionAnimator()
+        return animator
+    }
+    
+/*
+    
+    - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+    {
+    PlayViewTransitionAnimator *animator = [[PlayViewTransitionAnimator alloc] init];
+    
+    return animator;
+    }
+    
+*/
 
     /*
     // Override to support conditional editing of the table view.

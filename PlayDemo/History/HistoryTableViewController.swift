@@ -20,6 +20,8 @@ class HistoryTableViewController: UITableViewController,UIViewControllerTransiti
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "返回", style: .plain, target: self, action: #selector(back))
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "清除", style: .plain, target: self, action: #selector(clean))
+        
+        self.navigationItem.title = "历史记录"
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 

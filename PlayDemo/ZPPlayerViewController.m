@@ -272,26 +272,7 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
 //static float volumn = 0;
 -(void)setMute:(BOOL)mute {
     _mute = mute;
-    
-    [self.playController setMute:YES];
-//    [self.playController setMute:mute];
-//    [[QYPlayerController sharedInstance]setMute:YES];
-    
-//    MPVolumeView *volumeV = [[MPVolumeView alloc]init];
-//    volumeV.showsVolumeSlider = NO;
-//    UISlider *volumeSlider = nil;
-//    for (UIView *view in volumeV.subviews) {
-//        if ([[view.class description]isEqualToString:@"MPVolumeSlider"]) {
-//            volumeSlider = (UISlider*)view;
-//            break;
-//        }
-//    }
-//    if (mute) {
-//        volumn = volumeSlider.value;
-//        volumeSlider.value = 0.0f;
-//    } else {
-//        volumeSlider.value = volumn;
-//    }
+    [self.playController setMute:mute];
 }
 
 #pragma mark - Create subView

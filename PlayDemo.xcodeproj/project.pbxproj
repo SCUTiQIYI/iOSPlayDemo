@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1170ACCD1F0CACF4009B7F93 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1170ACCA1F0CACF4009B7F93 /* DatabaseManager.swift */; };
+		1170ACCE1F0CACF4009B7F93 /* HistoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1170ACCB1F0CACF4009B7F93 /* HistoryManager.swift */; };
+		1170ACCF1F0CACF4009B7F93 /* HistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1170ACCC1F0CACF4009B7F93 /* HistoryTableViewController.swift */; };
 		1805A7971EEBA07B00DD58FE /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1805A7961EEBA07B00DD58FE /* MBProgressHUD.m */; };
 		181B827C1EF69F120040D451 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 181B825C1EF69F120040D451 /* MKAnnotationView+WebCache.m */; };
 		181B827D1EF69F120040D451 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 181B825E1EF69F120040D451 /* NSData+ImageContentType.m */; };
@@ -154,6 +157,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1170ACC91F0CACF3009B7F93 /* PlayDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PlayDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		1170ACCA1F0CACF4009B7F93 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatabaseManager.swift; path = History/DatabaseManager.swift; sourceTree = "<group>"; };
+		1170ACCB1F0CACF4009B7F93 /* HistoryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistoryManager.swift; path = History/HistoryManager.swift; sourceTree = "<group>"; };
+		1170ACCC1F0CACF4009B7F93 /* HistoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistoryTableViewController.swift; path = History/HistoryTableViewController.swift; sourceTree = "<group>"; };
 		1805A7951EEBA07B00DD58FE /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		1805A7961EEBA07B00DD58FE /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		181B825B1EF69F120040D451 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
@@ -474,6 +481,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1170ACC81F0CACBD009B7F93 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				1170ACCA1F0CACF4009B7F93 /* DatabaseManager.swift */,
+				1170ACCB1F0CACF4009B7F93 /* HistoryManager.swift */,
+				1170ACCC1F0CACF4009B7F93 /* HistoryTableViewController.swift */,
+				1170ACC91F0CACF3009B7F93 /* PlayDemo-Bridging-Header.h */,
+			);
+			name = History;
+			sourceTree = "<group>";
+		};
 		1805A7941EEBA04E00DD58FE /* Lib */ = {
 			isa = PBXGroup;
 			children = (
@@ -1015,6 +1033,7 @@
 		E5F555BF1EC0004F004DFC8D /* PlayDemo */ = {
 			isa = PBXGroup;
 			children = (
+				1170ACC81F0CACBD009B7F93 /* History */,
 				6C28EB921F074FB00097C579 /* TransitionAnimator */,
 				1805A7941EEBA04E00DD58FE /* Lib */,
 				18C552091ED810560012E16B /* Others */,
@@ -1163,6 +1182,7 @@
 					E5F555BC1EC0004F004DFC8D = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = QR8U5QB33T;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 					E5F555D51EC0004F004DFC8D = {
@@ -1238,6 +1258,7 @@
 				18AE602B1EF3886300F56F59 /* MJRefreshComponent.m in Sources */,
 				18E52A761EEFA6BF00244A7A /* TYTabPagerController.m in Sources */,
 				18C5520D1ED917430012E16B /* ZPVideoProgressBar.m in Sources */,
+				1170ACCF1F0CACF4009B7F93 /* HistoryTableViewController.swift in Sources */,
 				186A8CAD1F034D780066AF42 /* UIColor+PYSearchExtension.m in Sources */,
 				188E01C11EF6A25700970DA5 /* CollectionReusableBannerHeaderView.m in Sources */,
 				18AE60351EF3886300F56F59 /* MJRefreshNormalHeader.m in Sources */,
@@ -1308,8 +1329,10 @@
 				6C17D4191F0A6C21003A385C /* ChannelCollectionViewCell.m in Sources */,
 				18AE602D1EF3886300F56F59 /* MJRefreshHeader.m in Sources */,
 				18A6157B1EEFE4D30081BEDD /* AFNetworkReachabilityManager.m in Sources */,
+				1170ACCD1F0CACF4009B7F93 /* DatabaseManager.swift in Sources */,
 				18AE602F1EF3886300F56F59 /* MJRefreshAutoNormalFooter.m in Sources */,
 				18AE602A1EF3886300F56F59 /* MJRefreshBackFooter.m in Sources */,
+				1170ACCE1F0CACF4009B7F93 /* HistoryManager.swift in Sources */,
 				18AE602C1EF3886300F56F59 /* MJRefreshFooter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1439,6 +1462,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = QR8U5QB33T;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
@@ -1463,6 +1487,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = HZP.com.iqiyiplayer.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PlayDemo/PlayDemo-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				VALID_ARCHS = armv7;
 			};
 			name = Debug;
@@ -1471,6 +1498,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = QR8U5QB33T;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
@@ -1495,6 +1523,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = HZP.com.iqiyiplayer.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PlayDemo/PlayDemo-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				VALID_ARCHS = "arm64 armv7";
 			};
 			name = Release;
@@ -1502,6 +1532,7 @@
 		E5F555E31EC0004F004DFC8D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = LWP87BEU7U;
 				INFOPLIST_FILE = PlayDemoTests/Info.plist;
@@ -1515,6 +1546,7 @@
 		E5F555E41EC0004F004DFC8D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = LWP87BEU7U;
 				INFOPLIST_FILE = PlayDemoTests/Info.plist;

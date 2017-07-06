@@ -65,10 +65,11 @@ static const CGFloat kVipViewSize = 12;
 
 #pragma mark - Create Subview
 -(void)createSubView {
-    
-//  self.contentView.backgroundColor = [UIColor yellowColor];
+    self.backgroundColor = [UIColor whiteColor];
+    self.contentView.backgroundColor = [UIColor whiteColor];
     UIImageView *coverView = [[UIImageView alloc]init];
-//  coverView.backgroundColor = [UIColor redColor];
+    coverView.backgroundColor = [UIColor whiteColor];
+    coverView.opaque = YES;
     [self.contentView addSubview:coverView];
     self.coverView = coverView;
     
@@ -76,6 +77,8 @@ static const CGFloat kVipViewSize = 12;
     [titleLabel setTextAlignment:NSTextAlignmentLeft];
     [titleLabel setTextColor:[UIColor darkGrayColor]];
     [self.contentView addSubview:titleLabel];
+    titleLabel.backgroundColor = [UIColor whiteColor];
+    titleLabel.clipsToBounds = YES;
     self.titleLabel = titleLabel;
     
     UILabel *detailLabel = [[UILabel alloc]init];
@@ -84,6 +87,8 @@ static const CGFloat kVipViewSize = 12;
     [detailLabel setFont:[UIFont systemFontOfSize:UIFontWeightLight]];
     [detailLabel setNumberOfLines:0];
     [self.contentView addSubview:detailLabel];
+    detailLabel.backgroundColor = [UIColor whiteColor];
+    detailLabel.clipsToBounds = YES;
     self.detailLabel = detailLabel;
     
     UIImageView *isVipView = [[UIImageView alloc]init];

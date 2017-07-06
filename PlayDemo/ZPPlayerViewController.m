@@ -627,6 +627,8 @@ static const CGFloat StatuesBarHeight = 20.0f;
     [btn setTitleColor:[UIColor blueColor] forState:UIControlStateSelected];
     [btn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
     [btn addTarget:self action:@selector(footBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
+    btn.titleLabel.clipsToBounds = YES;
+    [btn.titleLabel setBackgroundColor:[UIColor whiteColor]];
     self.tableViewSectionFootViewBtn = btn;
 }
 

@@ -57,9 +57,13 @@
     title.numberOfLines = 0;
 //    [title setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleTitle1]];
     [self addSubview:title];
+    title.backgroundColor = [UIColor whiteColor];
+    title.clipsToBounds = YES;
     self.titleLabel = title;
     
     UILabel *shortTitle = [[UILabel alloc]init];
+    shortTitle.backgroundColor = [UIColor whiteColor];
+    shortTitle.clipsToBounds = YES;
 //    [shortTitle setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleTitle2]];
     [self addSubview:shortTitle];
     self.shortTitleLabel = shortTitle;
@@ -69,11 +73,15 @@
     self.imageView = imageView;
     
     UILabel *score = [[UILabel alloc]init];
+    score.backgroundColor = [UIColor whiteColor];
+    score.clipsToBounds = YES;
 //    [score setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
     [self addSubview:score];
     self.scoreLabel = score;
     
     UILabel *playCount = [[UILabel alloc]init];
+    playCount.backgroundColor = [UIColor whiteColor];
+    playCount.clipsToBounds = YES;
 //    [playCount setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
     [self addSubview:playCount];
     self.playCountLabel = playCount;
@@ -89,6 +97,8 @@
 //    self.videoPropertyTypeLabel = videoProperty;
     
     UILabel *dataTime = [[UILabel alloc]init];
+    dataTime.backgroundColor = [UIColor whiteColor];
+    dataTime.clipsToBounds = YES;
 //    [dataTime setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
     [self addSubview:dataTime];
     self.dateLabel = dataTime;

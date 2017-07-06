@@ -88,6 +88,10 @@ static const NSUInteger kMinHistoryItemsCount = 2;
  */
 @property (nonatomic, weak) UIButton *pauseBtn;
 /**
+ *  关闭按钮
+ */
+@property (nonatomic, weak) UIButton *closeBtn;
+/**
  *  进度条
  */
 @property (nonatomic, weak) ZPVideoProgressBar *progressBar;
@@ -255,10 +259,11 @@ static const NSUInteger kMinHistoryItemsCount = 2;
     self.fullScreenBtn.hidden = isfullScreen;
     self.originalScreenBtn.hidden = !isfullScreen;
 
+    //设置隐藏状态栏
+    [self setNeedsStatusBarAppearanceUpdate];
+    
     //2.设置屏幕显示比例
     /**原始比例*/
-    
-    
     CGAffineTransform transform = CGAffineTransformIdentity;
     //全屏
     if (isfullScreen) {
@@ -281,6 +286,10 @@ static const NSUInteger kMinHistoryItemsCount = 2;
     }];
 }
 
+-(BOOL)prefersStatusBarHidden {
+    if (self.isFullScreen) return YES;
+    else return NO;
+}
 
 //static float volumn = 0;
 -(void)setMute:(BOOL)mute {
@@ -455,6 +464,7 @@ static const NSUInteger kMinHistoryItemsCount = 2;
 //    [closeBtn setTitle:@"关闭" forState:UIControlStateNormal];
     //    [pauseBtn setBackgroundColor:[UIColor redColor]];
     [self.playController.view addSubview:closeBtn];
+    self.closeBtn = closeBtn;
 
 }
 /**
@@ -941,6 +951,7 @@ static bool kIsFullScreen;
         self.pauseBtn.alpha = 0.0f;
         self.progressBar.alpha = 0.0f;
         self.suspendBtn.alpha = 0.0f;
+        self.closeBtn.alpha = 0.0f;
     } completion:^(BOOL finished) {
         [self hideAllSubview];
         self.fullScreenBtn.alpha = 1.0f;
@@ -949,6 +960,7 @@ static bool kIsFullScreen;
         self.pauseBtn.alpha = 1.0f;
         self.progressBar.alpha = 1.0f;
         self.suspendBtn.alpha = 1.0f;
+        self.closeBtn.alpha = 1.0f;
     }];
 }
 
@@ -963,6 +975,7 @@ static bool kIsFullScreen;
     self.pauseBtn.hidden = YES;
     self.progressBar.hidden = YES;
     self.suspendBtn.hidden = YES;
+    self.closeBtn.hidden = YES;
 }
 /**
  *  显示所有子控件
@@ -985,6 +998,7 @@ static bool kIsFullScreen;
     }
     self.progressBar.hidden = NO;
     self.suspendBtn.hidden = NO;
+    self.closeBtn.hidden = NO;
 }
 
 #pragma mark - QYPlayerControllerDelegate

@@ -30,7 +30,7 @@
 //#import "History/HistoryTableViewController.swift"
 
 static const CGFloat kSearchBarHeight = 40.0f;
-static const CGFloat kTopButtonWidth = 50.0f;
+static const CGFloat kTopButtonWidth = 40.0f;
 //static const CGFloat kCycleViewHeight = 180.0f;
 static const CGFloat kViewMargin = 10.0f;
 static const NSTimeInterval kRefetchDataInterval = 3.0f;
@@ -157,8 +157,11 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
  *  创建历史按钮
  */
 -(void)setupHistoryButton {
-    UIButton *historyButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [historyButton setTitle:@"历史" forState:UIControlStateNormal];
+    UIButton *historyButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [historyButton setTitle:@"历史" forState:UIControlStateNormal];
+    [historyButton setBackgroundColor:[UIColor colorWithRed:201.0f/255 green:201.0f/255 blue:206.0f/255 alpha:1.0f]];
+    [historyButton setImage:[UIImage imageNamed:@"history"] forState:UIControlStateNormal];
+    
     [historyButton addTarget:self action:@selector(historyBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
     CGFloat btnX = 0;
     CGFloat btnY = 0;

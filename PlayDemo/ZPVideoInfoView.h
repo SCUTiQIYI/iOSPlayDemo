@@ -12,5 +12,4 @@
 @interface ZPVideoInfoView : UIView
 @property (nonatomic, strong) ZPVideoInfo *info;
 
-
 @end

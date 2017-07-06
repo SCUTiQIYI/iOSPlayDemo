@@ -78,26 +78,26 @@
     [self addSubview:playCount];
     self.playCountLabel = playCount;
     
-    UILabel *vedioType = [[UILabel alloc]init];
+//    UILabel *vedioType = [[UILabel alloc]init];
 //    [vedioType setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
-    [self addSubview: vedioType];
-    self.videoTypeLabel = vedioType;
+//    [self addSubview: vedioType];
+//    self.videoTypeLabel = vedioType;
     
-    UILabel *videoProperty = [[UILabel alloc]init];
+//    UILabel *videoProperty = [[UILabel alloc]init];
 //    [videoProperty setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
-    [self addSubview:videoProperty];
-    self.videoPropertyTypeLabel = videoProperty;
+//    [self addSubview:videoProperty];
+//    self.videoPropertyTypeLabel = videoProperty;
     
     UILabel *dataTime = [[UILabel alloc]init];
 //    [dataTime setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
     [self addSubview:dataTime];
     self.dateLabel = dataTime;
     
-    UILabel *recommendLabel = [[UILabel alloc]init];
-    recommendLabel.text = @"猜你喜欢";
-    recommendLabel.textAlignment = NSTextAlignmentCenter;
-    [self addSubview:recommendLabel];
-    self.recommentLabel = recommendLabel;
+//    UILabel *recommendLabel = [[UILabel alloc]init];
+//    recommendLabel.text = @"猜你喜欢";
+//    recommendLabel.textAlignment = NSTextAlignmentCenter;
+//    [self addSubview:recommendLabel];
+//    self.recommentLabel = recommendLabel;
 }
 
 
@@ -129,11 +129,11 @@
     [super layoutSubviews];
     
     [self.titleLabel sizeToFit];
-    [self.shortTitleLabel sizeToFit];
+//    [self.shortTitleLabel sizeToFit];
     [self.scoreLabel sizeToFit];
     [self.playCountLabel sizeToFit];
-    [self.videoTypeLabel sizeToFit];
-    [self.videoPropertyTypeLabel sizeToFit];
+//    [self.videoTypeLabel sizeToFit];
+//    [self.videoPropertyTypeLabel sizeToFit];
     [self.dateLabel sizeToFit];
     [self.recommentLabel sizeToFit];
     
@@ -142,29 +142,26 @@
     CGRect frame = self.titleLabel.frame;
     self.titleLabel.frame = CGRectMake(0, 0, boundsWidth, frame.size.height);
     
-    frame = self.shortTitleLabel.frame;
-    self.shortTitleLabel.frame = CGRectMake(0, CGRectGetMaxY(self.titleLabel.frame), boundsWidth, frame.size.height);
+//    frame = self.shortTitleLabel.frame;
+//    self.shortTitleLabel.frame = CGRectMake(0, CGRectGetMaxY(self.titleLabel.frame), boundsWidth, frame.size.height);
     
     frame = self.scoreLabel.frame;
-    self.scoreLabel.frame = CGRectMake(0, CGRectGetMaxY(self.shortTitleLabel.frame), boundsWidth, frame.size.height);
+    self.scoreLabel.frame = CGRectMake(0, CGRectGetMaxY(self.titleLabel.frame), boundsWidth, frame.size.height);
     
     frame = self.playCountLabel.frame;
     self.playCountLabel.frame = CGRectMake(0, CGRectGetMaxY(self.scoreLabel.frame), boundsWidth, frame.size.height);
     
-    
-    frame = self.videoTypeLabel.frame;
-    self.videoTypeLabel.frame = CGRectMake(0, CGRectGetMaxY(self.playCountLabel.frame), boundsWidth, frame.size.height);
-    
-    
-    frame = self.videoPropertyTypeLabel.frame;
-    self.videoPropertyTypeLabel.frame = CGRectMake(0, CGRectGetMaxY(self.videoTypeLabel.frame), boundsWidth, frame.size.height);
-    
+//    frame = self.videoTypeLabel.frame;
+//    self.videoTypeLabel.frame = CGRectMake(0, CGRectGetMaxY(self.playCountLabel.frame), boundsWidth, frame.size.height);
+//    
+//    frame = self.videoPropertyTypeLabel.frame;
+//    self.videoPropertyTypeLabel.frame = CGRectMake(0, CGRectGetMaxY(self.videoTypeLabel.frame), boundsWidth, frame.size.height);
     
     frame = self.dateLabel.frame;
-    self.dateLabel.frame = CGRectMake(0, CGRectGetMaxY(self.videoPropertyTypeLabel.frame), boundsWidth, frame.size.height);
+    self.dateLabel.frame = CGRectMake(0, CGRectGetMaxY(self.playCountLabel.frame), boundsWidth, frame.size.height);
     
-    frame = self.recommentLabel.frame;
-    self.recommentLabel.frame = CGRectMake(0, CGRectGetMaxY(self.dateLabel.frame) + 20, self.bounds.size.width, frame.size.height);
+//    frame = self.recommentLabel.frame;
+//    self.recommentLabel.frame = CGRectMake(0, CGRectGetMaxY(self.dateLabel.frame) + 20, self.bounds.size.width, frame.size.height);
 }
 
 /*

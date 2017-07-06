@@ -58,6 +58,14 @@ static const CGFloat kZPPlayerViewSubViewMargin = 5.0f;
  *  状态弹出框的现实时长
  */
 static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
+/**
+ *  展开状态下历史记录的最大条数
+ */
+static const NSUInteger kMaxHistoryItemsCount = 10;
+/**
+ *  收起状态下历史记录的最大条数
+ */
+static const NSUInteger kMinHistoryItemsCount = 2;
 @interface ZPPlayerViewController () <QYPlayerControllerDelegate, ZPVideoProgressBarDelegate, DCPathButtonDelegate, UIViewControllerTransitioningDelegate, UITableViewDataSource, UITableViewDelegate,UIViewControllerTransitioningDelegate>
 /**
  *  播放器
@@ -103,6 +111,10 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
  *  推荐结果tableView
  */
 @property (nonatomic, weak) UITableView *tableView;
+/**
+ *  历史记录的更多按钮
+ */
+@property (nonatomic, strong) UIButton *tableViewSectionFootViewBtn;
 /**
  *  推荐结果模型
  */
@@ -303,6 +315,8 @@ static const NSTimeInterval kHUDAppearanceDuration = 1.0f;
     [self createScreenShootView];
     
     [self setupTableView];
+    [self setupTableViewSectionFooterButton];
+    
 //    [self createVideoInfoView];
 }
 
@@ -568,7 +582,7 @@ static const CGFloat ScreenShootViewScale = 0.2f;
     CGFloat tableViewX = 0;
     CGFloat tableViewY = self.playController.view.bounds.size.height + StatuesBarHeight;
     CGRect tableFrame = CGRectMake(tableViewX, tableViewY, tableViewW, tableViewH);
-    UITableView *tableView = [[UITableView alloc]initWithFrame:tableFrame style:UITableViewStylePlain];
+    UITableView *tableView = [[UITableView alloc]initWithFrame:tableFrame style:UITableViewStyleGrouped];
     tableView.tableHeaderView = [self createVideoInfoView];
     tableView.dataSource = self;
     tableView.delegate = self;
@@ -576,6 +590,8 @@ static const CGFloat ScreenShootViewScale = 0.2f;
     [self.view addSubview:tableView];
     [self.view sendSubviewToBack:tableView];
     self.tableView = tableView;
+    
+
 }
 
 static const CGFloat StatuesBarHeight = 20.0f;
@@ -585,12 +601,23 @@ static const CGFloat StatuesBarHeight = 20.0f;
 //    infoView.backgroundColor = [UIColor blueColor];
     CGSize windowSize = [UIApplication sharedApplication].keyWindow.bounds.size;
     CGFloat infoViewW = windowSize.width;
-    CGFloat infoViewH = 180;
+    CGFloat infoViewH = 60;
     CGFloat infoViewX = 0;
     CGFloat infoViewY = self.playController.view.bounds.size.height + StatuesBarHeight;
     infoView.frame = CGRectMake(infoViewX, infoViewY, infoViewW, infoViewH);
     self.videoInfoView = infoView;
     return infoView;
+}
+
+-(void)setupTableViewSectionFooterButton {
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+    [btn setTitle:@"点击查看更多" forState:UIControlStateNormal];
+    [btn setTitle:@"点击收起" forState:UIControlStateSelected];
+    [btn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor blueColor] forState:UIControlStateSelected];
+    [btn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    [btn addTarget:self action:@selector(footBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
+    self.tableViewSectionFootViewBtn = btn;
 }
 
 //-(void)createVideoInfoView {
@@ -856,6 +883,19 @@ static const CGFloat StatuesBarHeight = 20.0f;
 
 }
 
+/**
+ *  展开和收起历史记录
+ */
+-(void)footBtnDidClick {
+    UIButton *btn = self.tableViewSectionFootViewBtn;
+    if (btn.isSelected) {
+        btn.selected = NO;
+    } else {
+        btn.selected = YES;
+    }
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
 -(void) clickMuteButton {
     if (self.isMute) {
         [self cancelMute];
@@ -984,30 +1024,65 @@ static bool kIsFullScreen;
 
 #pragma mark - Table view Data Source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0) {
+        NSInteger historyCount = [[HistoryManager sharedInstance] getHistoryList].count;
+        if (self.tableViewSectionFootViewBtn.isSelected) {
+            //展开状态
+            return historyCount <= kMaxHistoryItemsCount ? historyCount : kMaxHistoryItemsCount;
+        }
+        return historyCount <= kMinHistoryItemsCount ? historyCount : kMinHistoryItemsCount;
+    }
     return self.recommendVideos.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ZPVideoInfo *info = self.recommendVideos[indexPath.row];
+    ZPVideoInfo *info;
+    if (indexPath.section == 0) {
+        NSArray *historyList = [[HistoryManager sharedInstance] getHistoryList];
+        NSString *historyID = historyList[historyList.count - 1 - indexPath.row];
+        info = [[HistoryManager sharedInstance] getHistoryWithId:historyID];
+    } else {
+        info = self.recommendVideos[indexPath.row];
+    }
+//    ZPVideoInfo *info = self.recommendVideos[indexPath.row];
     ZPChannelPageViewCell *cell = [ZPChannelPageViewCell cellWithTableView:tableView];
     cell.videoInfo = info;
     return cell;
 }
 
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    NSString *title;
+    if (section == 0) {
+        title = @"历史播放";
+    } else {
+        title = @"猜你喜欢";
+    }
+    return title;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if (section == 0) {
+        return self.tableViewSectionFootViewBtn;
+    }
+    return nil;
+}
 
 #pragma mark - Table view delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    ZPVideoInfo *videoInfo = self.recommendVideos[indexPath.row];
+    
+    ZPVideoInfo *videoInfo;
+    if (indexPath.section == 0) {
+        NSString *historyID = [[HistoryManager sharedInstance] getHistoryList][indexPath.row];
+        videoInfo = [[HistoryManager sharedInstance] getHistoryWithId:historyID];
+    } else {
+        videoInfo = self.recommendVideos[indexPath.row];
+    }
+//    ZPVideoInfo *videoInfo = self.recommendVideos[indexPath.row];
     [self resetPlayingVideo:videoInfo];
-//    ZPPlayerViewController *playerVC = [[ZPPlayerViewController alloc]init];
-//    playerVC.videoInfo = videoInfo;
-//    playerVC.transitioningDelegate = self;
-//    self
-//    [self presentViewController:playerVC animated:YES completion:nil];
 }
 
 

@@ -163,7 +163,7 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
     [historyButton setImage:[UIImage imageNamed:@"history"] forState:UIControlStateNormal];
     
     [historyButton addTarget:self action:@selector(historyBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
-    CGFloat btnX = 0;
+    CGFloat btnX = self.view.bounds.size.width - kTopButtonWidth;
     CGFloat btnY = 0;
     CGFloat btnW = kTopButtonWidth;
     CGFloat btnH = kSearchBarHeight;
@@ -178,7 +178,7 @@ static NSString* const kPopChartURL = @"http://iface.qiyi.com/openapi/realtime/r
     UISearchBar *searchBar = [[UISearchBar alloc]init];
     CGFloat searchBarH = kSearchBarHeight;
     CGFloat searchBarW = self.view.bounds.size.width - kTopButtonWidth;
-    CGFloat searchBarX = kTopButtonWidth;
+    CGFloat searchBarX = 0;
     CGFloat searchBarY = 0;
     searchBar.frame = CGRectMake(searchBarX, searchBarY, searchBarW, searchBarH);
     searchBar.placeholder = @"搜索";

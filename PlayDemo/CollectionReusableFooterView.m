@@ -46,7 +46,9 @@ static const CGFloat kSeparatorHeight = 15;
     [moreVideoBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:moreVideoBtn];
     self.moreVideoBtn = moreVideoBtn;
-    
+    [self.moreVideoBtn.titleLabel setBackgroundColor:[UIColor whiteColor]];
+    self.moreVideoBtn.titleLabel.clipsToBounds = YES;
+  
     //2. 换一批视频按钮
     UIButton *changeVideoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 
@@ -59,6 +61,8 @@ static const CGFloat kSeparatorHeight = 15;
     [changeVideoBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:changeVideoBtn];
     self.changeVideoBtn = changeVideoBtn;
+    self.changeVideoBtn.titleLabel.clipsToBounds = YES;
+    [self.changeVideoBtn.titleLabel setBackgroundColor:[UIColor whiteColor]];
     
     //3. 分割线
     UIView *separator = [[UIView alloc]init];

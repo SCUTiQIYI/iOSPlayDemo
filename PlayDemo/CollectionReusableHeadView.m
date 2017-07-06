@@ -22,7 +22,9 @@
 }
 
 -(void)layoutSubviews {
-    _lable.frame = CGRectMake(0, 0, self.bounds.size.width/2, self.bounds.size.height);
+    _lable.backgroundColor = [UIColor whiteColor];
+    _lable.layer.masksToBounds = YES;
+    _lable.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
     _lable.font = [UIFont systemFontOfSize:14];
 }
 

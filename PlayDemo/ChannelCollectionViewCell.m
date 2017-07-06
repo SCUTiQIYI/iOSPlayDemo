@@ -41,7 +41,11 @@ static const CGFloat kVipImageViewSize = 15.0;
         [self addSubview:_detailLable];
         [self addSubview:_vipImageView];
         _text.font = [UIFont systemFontOfSize:12];
+        _text.backgroundColor = [UIColor whiteColor];
+        _text.layer.masksToBounds = YES;
         _detailLable.font = [UIFont systemFontOfSize:10];
+        _detailLable.backgroundColor = [UIColor whiteColor];
+        _detailLable.layer.masksToBounds = YES;
     }
     return self;
 }

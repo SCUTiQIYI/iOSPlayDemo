@@ -37,6 +37,10 @@
         [self addSubview:_detailLable];
         _text.font = [UIFont systemFontOfSize:12];
         _detailLable.font = [UIFont systemFontOfSize:10];
+        _text.backgroundColor = [UIColor whiteColor];
+        _text.layer.masksToBounds = YES;
+        _detailLable.backgroundColor = [UIColor whiteColor];
+        _detailLable.layer.masksToBounds = YES;
     }
     return self;
 }

@@ -37,6 +37,8 @@
     titleLabel.textColor = [UIColor darkTextColor];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.contentView addSubview:titleLabel];
+    titleLabel.backgroundColor = [UIColor whiteColor];
+    titleLabel.clipsToBounds = YES;
     _titleLabel = titleLabel;
 }
 

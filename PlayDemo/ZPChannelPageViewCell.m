@@ -138,7 +138,6 @@ static const CGFloat kVipViewSize = 12;
     CGFloat coverH = kCellImageHeight;
     CGFloat coverW = 75;
     self.coverView.frame = CGRectMake(coverX, coverY, coverW, coverH);
-    NSLog(@"%f",coverW);
     
     CGFloat vipW = kVipViewSize;
     CGFloat vipH = kVipViewSize;

@@ -23,7 +23,10 @@
     // Override point for customization after application launch.
     
     //必须调用
-    [[QYPlayerController sharedInstance] initPlayer];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[QYPlayerController sharedInstance] initPlayer];
+    });
+    
     
     UIWindow *windows = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController *vc = [[ZPHomePageViewController alloc] init];

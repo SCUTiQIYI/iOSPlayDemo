@@ -68,11 +68,14 @@ static const CGFloat kVipViewSize = 12;
     
 //  self.contentView.backgroundColor = [UIColor yellowColor];
     UIImageView *coverView = [[UIImageView alloc]init];
+    coverView.backgroundColor = [UIColor whiteColor];
+//    coverView.opaque = NO;
 //  coverView.backgroundColor = [UIColor redColor];
     [self.contentView addSubview:coverView];
     self.coverView = coverView;
     
     UILabel *titleLabel = [[UILabel alloc]init];
+    titleLabel.backgroundColor = [UIColor whiteColor];
     [titleLabel setTextAlignment:NSTextAlignmentLeft];
     [titleLabel setTextColor:[UIColor darkGrayColor]];
     [self.contentView addSubview:titleLabel];
